@@ -2,12 +2,29 @@ import React, { useState } from "react";
 import SEO from "../components/SEO";
 import { useLanguage } from "../context/LanguageContext";
 import VersionFilter from "../components/product/VersionFilter";
+import ProductActionCard from "../components/product/ProductActionCard";
+import { windowsData } from "../data/windowsData";
 import PromoVideo from "./PromoVideo";
 import FAQ from "./FAQ";
 
 export default function HomePage() {
   const { t } = useLanguage();
   const [selectedVersion, setSelectedVersion] = useState("all");
+
+  // সব সংস্করণ থেকে প্রোডাক্টগুলো ফ্ল্যাট অ্যারেতে রূপান্তর
+  const allProducts = windowsData.flatMap((category) =>
+    category.editions.map((edition) => ({
+      ...edition,
+      categoryId: category.id,
+      categoryName: category.versionName,
+    })),
+  );
+
+  // নিখুঁত ফিল্টারিং লজিক
+  const filteredProducts =
+    selectedVersion === "all"
+      ? allProducts
+      : allProducts.filter((item) => item.categoryId === selectedVersion);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4">
@@ -21,10 +38,24 @@ export default function HomePage() {
           {t("selectEditionSub")}
         </p>
 
+        {/* Version Filter Tabs */}
         <VersionFilter
           selectedVersion={selectedVersion}
           setSelectedVersion={setSelectedVersion}
         />
+
+        {/* Product Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
+          {filteredProducts && filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <ProductActionCard key={product.id} product={product} />
+            ))
+          ) : (
+            <p className="text-center text-slate-500 col-span-full py-10">
+              No products found for this filter.
+            </p>
+          )}
+        </div>
 
         <PromoVideo />
         <FAQ />

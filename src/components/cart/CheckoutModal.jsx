@@ -345,6 +345,26 @@ export default function CheckoutModal({
             )}
           </div>
 
+          {/* Trusted Payment Badges / Logos */}
+          <div className="pt-2">
+            <div className="flex items-center justify-between px-1 mb-1.5">
+              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                Supported Gateways
+              </span>
+            </div>
+            <div className="flex items-center justify-center gap-2.5 bg-slate-950/40 border border-slate-800/80 py-2.5 px-3 rounded-xl">
+              <span className="bg-pink-500/10 text-pink-400 border border-pink-500/20 px-3 py-1 rounded-md text-xs font-bold tracking-wide">
+                bKash
+              </span>
+              <span className="bg-orange-500/10 text-orange-400 border border-orange-500/20 px-3 py-1 rounded-md text-xs font-bold tracking-wide">
+                Nagad
+              </span>
+              <span className="bg-purple-500/10 text-purple-400 border border-purple-500/20 px-3 py-1 rounded-md text-xs font-bold tracking-wide">
+                Rocket
+              </span>
+            </div>
+          </div>
+
           {/* Submit Button */}
           <button
             type="submit"
