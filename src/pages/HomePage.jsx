@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import VersionFilter from "../components/product/VersionFilter";
 import ProductCard from "../components/product/ProductCard";
 import LiveChat from "../components/trust/LiveChat";
@@ -6,7 +7,7 @@ import { windowsData } from "../data/windowsData";
 import { Shield, Zap, RefreshCw } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
-// সঠিক ইম্পোর্ট (যেহেতু ফাইলগুলো src/Home/ ফোল্ডারে আছে)
+// সঠিক পাথ (src/Home/ ফোল্ডারের ফাইলগুলোর জন্য)
 import PromoVideo from "../Home/PromoVideo";
 import ReviewSlider from "../Home/ReviewSlider";
 import FAQ from "../Home/FAQ";
@@ -14,17 +15,35 @@ import FAQ from "../Home/FAQ";
 export default function HomePage() {
   const [selectedVersion, setSelectedVersion] = useState("all");
   const { language } = useLanguage();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search")?.toLowerCase() || "";
 
-  const filteredData =
-    selectedVersion === "all"
-      ? windowsData
-      : windowsData.filter((item) => item.id === selectedVersion);
+  // ভার্সন ফিল্টার এবং সার্চ কুয়েরি অনুযায়ী ফিল্টার করা
+  const filteredData = windowsData
+    .map((category) => {
+      const filteredEditions = category.editions.filter((edition) => {
+        const matchesVersion =
+          selectedVersion === "all" || category.id === selectedVersion;
+        const matchesSearch =
+          !searchQuery ||
+          edition.name?.toLowerCase().includes(searchQuery) ||
+          category.versionName?.toLowerCase().includes(searchQuery) ||
+          edition.description?.toLowerCase().includes(searchQuery);
+
+        return matchesVersion && matchesSearch;
+      });
+
+      return {
+        ...category,
+        editions: filteredEditions,
+      };
+    })
+    .filter((category) => category.editions.length > 0);
 
   return (
     <div className="min-h-screen text-slate-100">
       {/* 1. Hero Section with Glow Background */}
       <section className="relative pt-12 pb-16 overflow-hidden bg-slate-950">
-        {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-blue-600 blur-[120px] rounded-full"></div>
           <div className="absolute top-40 left-1/4 w-[300px] h-[200px] bg-indigo-600 blur-[100px] rounded-full"></div>
@@ -91,6 +110,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Search Query Notification Bar */}
+      {searchQuery && (
+        <div className="max-w-7xl mx-auto px-4 pt-6">
+          <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex items-center justify-between">
+            <h2 className="text-sm sm:text-base font-bold text-white">
+              Search results for:{" "}
+              <span className="text-cyan-400">"{searchQuery}"</span>
+            </h2>
+            <a
+              href="/"
+              className="text-xs text-cyan-400 underline hover:text-cyan-300"
+            >
+              Clear Search
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* 2. Promotional Video Section */}
       <PromoVideo />
 
@@ -115,27 +152,36 @@ export default function HomePage() {
         />
 
         <div className="space-y-10">
-          {filteredData.map((version) => (
-            <div key={version.id} className="space-y-4">
-              <div className="flex items-center gap-3 border-b border-slate-800 pb-3">
-                <h3 className="text-lg sm:text-xl font-bold text-white">
-                  {version.versionName}{" "}
-                  {language === "English" ? "Editions" : "Edition-সমূহ"}
-                </h3>
-              </div>
+          {filteredData.length > 0 ? (
+            filteredData.map((version) => (
+              <div key={version.id} className="space-y-4">
+                <div className="flex items-center gap-3 border-b border-slate-800 pb-3">
+                  <h3 className="text-lg sm:text-xl font-bold text-white">
+                    {version.versionName}{" "}
+                    {language === "English" ? "Editions" : "Edition-সমূহ"}
+                  </h3>
+                </div>
 
-              {/* মোবাইল স্ক্রিনের জন্য grid-cols-2 দেওয়া হয়েছে */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-                {version.editions.map((edition) => (
-                  <ProductCard
-                    key={edition.id}
-                    edition={edition}
-                    versionName={version.versionName}
-                  />
-                ))}
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+                  {version.editions.map((edition) => (
+                    <ProductCard
+                      key={edition.id}
+                      edition={edition}
+                      versionName={version.versionName}
+                    />
+                  ))}
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center py-16 bg-slate-900/50 border border-slate-800 rounded-2xl">
+              <p className="text-slate-400 text-sm">
+                {language === "English"
+                  ? "No products found matching your search."
+                  : "আপনার সার্চ অনুযায়ী কোনো প্রোডাক্ট পাওয়া যায়নি।"}
+              </p>
             </div>
-          ))}
+          )}
         </div>
       </section>
 
