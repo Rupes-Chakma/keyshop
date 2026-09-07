@@ -8,7 +8,10 @@ import {
   ShoppingBag,
   ArrowLeft,
   CheckCircle2,
-  MessageCircle,
+  ShieldCheck,
+  Zap,
+  Sparkles,
+  Lock,
 } from "lucide-react";
 
 export default function CartPage() {
@@ -82,26 +85,32 @@ export default function CartPage() {
   const whatsappNumber = "8801648582639";
   const supportMessage = encodeURIComponent(
     language === "English"
-      ? "Hello! I need some help regarding checkout, product selection, and payment on KeyShop BD."
-      : "হ্যালো! কি-শপ বিডি (KeyShop BD) থেকে আমার কোন উইন্ডোজ কি বা প্রোডাক্টটি নেওয়া উচিত এবং চেকআউট ও পেমেন্ট নিয়ে আমার কিছু সহায়তা প্রয়োজন।",
+      ? "Hello! I want to order directly or speak with a representative regarding KeyShop BD products."
+      : "হ্যালো! আমি সরাসরি অর্ডার করতে চাই অথবা প্রতিনিধির সাথে কথা বলতে চাই।",
   );
 
   if (orderConfirmed) {
     return (
-      <div className="max-w-md mx-auto my-16 p-8 bg-slate-800/60 border border-slate-700 rounded-2xl text-center space-y-4">
-        <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto animate-bounce" />
-        <h2 className="text-2xl font-bold text-white">
-          {language === "English" ? "Order Successful!" : "অর্ডার সফল হয়েছে!"}
-        </h2>
-        <p className="text-slate-300 text-sm leading-relaxed">
-          {language === "English"
-            ? "After verifying your payment, the license key will be sent via email and SMS within 5-10 minutes."
-            : "আপনার পেমেন্ট ভেরিফাই করে আগামী ৫-১০ মিনিটের মধ্যে ইমেইল ও এসএমএস-এর মাধ্যমে লাইসেন্স কি পাঠিয়ে দেওয়া হবে।"}
-        </p>
+      <div className="max-w-md mx-auto my-24 p-8 bg-slate-900/90 border border-slate-700/80 rounded-3xl text-center space-y-6 shadow-2xl backdrop-blur-2xl">
+        <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/30 rounded-3xl flex items-center justify-center mx-auto shadow-inner">
+          <CheckCircle2 className="w-10 h-10 text-emerald-400 animate-bounce" />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-2xl font-black text-white">
+            {language === "English"
+              ? "Order Successful!"
+              : "অর্ডার সফল হয়েছে!"}
+          </h2>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            {language === "English"
+              ? "After verifying your payment, the license key will be sent via email and SMS within 5-10 minutes."
+              : "আপনার পেমেন্ট ভেরিফাই করে আগামী ৫-১০ মিনিটের মধ্যে ইমেইল ও এসএমএস-এর মাধ্যমে লাইসেন্স কি পাঠিয়ে দেওয়া হবে।"}
+          </p>
+        </div>
         <Link
           to="/"
           onClick={() => setOrderConfirmed(false)}
-          className="inline-block bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2.5 rounded-xl transition mt-4"
+          className="inline-block w-full py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-2xl transition shadow-lg shadow-blue-600/30 active:scale-[0.98]"
         >
           {language === "English" ? "Shop More" : "আরও শপিং করুন"}
         </Link>
@@ -111,19 +120,24 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4">
-        <ShoppingBag className="w-16 h-16 text-slate-600 mb-4" />
-        <h2 className="text-2xl font-bold text-white mb-2">
-          {language === "English" ? "Your Cart is Empty!" : "আপনার কার্ট খালি!"}
-        </h2>
-        <p className="text-slate-400 mb-6 text-sm">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
+        <div className="w-24 h-24 bg-slate-900/80 border border-slate-800 rounded-3xl flex items-center justify-center mb-6 shadow-inner relative group">
+          <div className="absolute inset-0 bg-blue-500/5 rounded-3xl blur-xl"></div>
+          <ShoppingBag className="w-12 h-12 text-slate-500 relative z-10" />
+        </div>
+        <h2 className="text-2xl font-black text-white mb-2">
           {language === "English"
-            ? "No Windows products have been added to the cart."
-            : "কার্টে কোনো উইন্ডোজ প্রোডাক্ট যোগ করা হয়নি।"}
+            ? "Your Cart is Empty!"
+            : "আপনার কার্ট একদম খালি!"}
+        </h2>
+        <p className="text-slate-400 mb-8 text-sm max-w-sm leading-relaxed">
+          {language === "English"
+            ? "No Windows products have been added to the cart yet. Explore our store!"
+            : "আপনার কার্টে কোনো উইন্ডোজ প্রোডাক্ট যুক্ত করা হয়নি। আমাদের কালেকশন থেকে পছন্দমতো কি বেছে নিন।"}
         </p>
         <Link
           to="/"
-          className="bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2.5 rounded-xl transition flex items-center gap-2"
+          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-8 py-3.5 rounded-2xl transition flex items-center gap-2.5 shadow-xl shadow-blue-600/25 active:scale-95"
         >
           <ArrowLeft className="w-4 h-4" />{" "}
           {language === "English"
@@ -135,43 +149,54 @@ export default function CartPage() {
   }
 
   return (
-    <div id="shopping-cart-section" className="max-w-4xl mx-auto px-4 py-10">
-      {/* হেডার ডিজাইন ও প্রফেশনাল টাইটেল */}
-      <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
+    <div
+      id="shopping-cart-section"
+      className="max-w-5xl mx-auto px-4 py-12 relative overflow-hidden"
+    >
+      {/* ব্যাকগ্রাউন্ড গ্লো ডিজাইন */}
+      <div className="absolute top-10 left-1/3 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-10 right-10 w-[350px] h-[350px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+      {/* হেডার সেকশন */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-800/80 relative z-10">
         <div>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center gap-2.5">
             {language === "English"
               ? "Review Your Digital License"
               : "আপনার ডিজিটাল লাইসেন্স কার্ট"}
+            <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-400 mt-1 flex items-center gap-1.5 font-medium">
+            <Zap className="w-3.5 h-3.5 text-blue-400 fill-current" />
             {language === "English"
               ? "Instant delivery genuine product keys"
-              : "ইন্সট্যান্ট ডেলিভারি জেনুইন প্রোডাক্ট কি"}
+              : "নিরাপদ লেনদেন ও ইন্সট্যান্ট অটোম্যাটিক ডেলিভারি"}
           </p>
         </div>
-        <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold px-3 py-1.5 rounded-full">
-          {cart.length} {language === "English" ? "Item(s)" : "টি আইটেম"}
-        </span>
+        <div className="self-start sm:self-auto bg-slate-900/90 border border-slate-800 text-blue-400 text-xs font-bold px-4 py-2.5 rounded-2xl shadow-inner flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+          {cart.length}{" "}
+          {language === "English"
+            ? "Item(s) Selected"
+            : "টি প্রোডাক্ট সিলেক্টেড"}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
         {/* প্রোডাক্ট কার্ড লিস্ট */}
-        <div className="md:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-4">
           {cart.map((item) => (
             <div
               key={item.id}
-              className="group relative bg-slate-900/80 backdrop-blur-xl border border-slate-800 hover:border-blue-500/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 shadow-xl overflow-hidden"
+              className="group relative bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 hover:border-blue-500/40 rounded-3xl p-5 transition-all duration-300 shadow-xl overflow-hidden"
             >
-              {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট */}
-              <div className="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-all"></div>
+              <div className="absolute -right-12 -top-12 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all"></div>
 
               <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start sm:items-center gap-4">
-                  {/* উইন্ডোজ লোগো আইকন */}
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0 shadow-inner">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0 shadow-inner group-hover:scale-105 transition-transform">
                     <svg
-                      className="w-6 h-6"
+                      className="w-7 h-7"
                       viewBox="0 0 88 88"
                       fill="currentColor"
                     >
@@ -183,11 +208,11 @@ export default function CartPage() {
                     <h3 className="font-bold text-white text-base sm:text-lg tracking-tight leading-snug">
                       {item.name}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-2 pt-0.5">
-                      <span className="text-[11px] font-medium text-blue-300 bg-blue-500/15 px-2.5 py-0.5 rounded-full border border-blue-500/20">
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      <span className="text-[11px] font-semibold text-blue-300 bg-blue-500/15 px-3 py-0.5 rounded-full border border-blue-500/20">
                         {item.versionName || "Digital License Key"}
                       </span>
-                      <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20 flex items-center gap-1">
+                      <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20 flex items-center gap-1.5 font-medium">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                         Instant Delivery
                       </span>
@@ -195,9 +220,9 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end gap-5 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+                <div className="flex items-center justify-between sm:justify-end gap-6 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-800">
                   <div className="text-left sm:text-right">
-                    <span className="text-[10px] text-slate-400 block uppercase tracking-wider">
+                    <span className="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">
                       Price
                     </span>
                     <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-200 text-lg sm:text-xl font-mono">
@@ -206,7 +231,7 @@ export default function CartPage() {
                   </div>
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-400 bg-slate-800/60 hover:bg-red-500/10 border border-slate-700 hover:border-red-500/30 rounded-xl transition cursor-pointer active:scale-95 shadow-sm"
+                    className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-400 bg-slate-800/80 hover:bg-red-500/10 border border-slate-700/80 hover:border-red-500/30 rounded-2xl transition cursor-pointer active:scale-95 shadow-sm"
                     title={
                       language === "English" ? "Remove item" : "রিমুভ করুন"
                     }
@@ -217,22 +242,49 @@ export default function CartPage() {
               </div>
             </div>
           ))}
+
+          {/* ট্রাস্ট গ্যারান্টি বক্স */}
+          <div className="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-3xl p-5 flex items-center gap-4 text-slate-300 text-xs shadow-lg">
+            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <div className="space-y-0.5">
+              <h4 className="font-bold text-white text-sm">
+                {language === "English"
+                  ? "100% Genuine Guarantee"
+                  : "১০০% জেনুইন লাইসেন্স গ্যারান্টি"}
+              </h4>
+              <p className="text-slate-400 text-xs">
+                {language === "English"
+                  ? "Full support available during software installation & activation."
+                  : "ইনস্টল ও অ্যাক্টিভেশন সংক্রান্ত যেকোনো সমস্যায় আমাদের ডেডিকেটেড সাপোর্ট টিম সবসময় সাথে আছে।"}
+              </p>
+            </div>
+          </div>
         </div>
 
+        {/* ডান পাশের অর্ডার সামারি বক্স */}
         <div>
-          {/* Order Summary Card */}
-          <div className="bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl text-slate-100">
-            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-3">
-              {language === "English" ? "Order Summary" : "অর্ডার সামারি"}
+          <div className="bg-slate-900/85 backdrop-blur-2xl border border-slate-800 rounded-3xl p-6 space-y-5 shadow-2xl text-slate-100 relative">
+            {/* কর্নার গ্লো */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+            <h3 className="text-xs font-black text-slate-300 uppercase tracking-widest border-b border-slate-800 pb-3 flex items-center justify-between">
+              <span>
+                {language === "English" ? "Order Summary" : "অর্ডার সামারি"}
+              </span>
+              <span className="text-blue-400 font-mono bg-blue-500/10 px-2.5 py-0.5 rounded-lg border border-blue-500/20">
+                {cart.length} Items
+              </span>
             </h3>
 
-            <div className="space-y-2.5 text-xs sm:text-sm text-slate-300">
+            <div className="space-y-3 text-xs sm:text-sm text-slate-300">
               <div className="flex justify-between">
                 <span className="text-slate-400">
-                  {language === "English" ? "Total Items:" : "মোট আইটেম:"}
+                  {language === "English" ? "Subtotal:" : "সাবটোটাল:"}
                 </span>
-                <span className="font-semibold text-white">
-                  {cart.length} {language === "English" ? "Item(s)" : "টি"}
+                <span className="font-semibold text-white font-mono">
+                  ৳{totalPrice}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -241,7 +293,7 @@ export default function CartPage() {
                     ? "Delivery Charge:"
                     : "ডেলিভারি চার্জ:"}
                 </span>
-                <span className="text-emerald-400 font-semibold">
+                <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                   {language === "English"
                     ? "Free (Instant)"
                     : "ফ্রি (ইন্সট্যান্ট)"}
@@ -249,47 +301,71 @@ export default function CartPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between bg-slate-950/80 border border-slate-800/80 rounded-xl p-3.5 mt-2 shadow-inner">
+            <div className="flex items-center justify-between bg-slate-950/90 border border-slate-800/80 rounded-2xl p-4 shadow-inner">
               <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                 {language === "English" ? "Grand Total:" : "সর্বমোট:"}
               </span>
-              <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 font-mono">
+              <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 font-mono">
                 ৳{totalPrice}
               </span>
             </div>
 
-            <div className="flex items-center justify-center gap-2 py-1 text-[11px] text-slate-400">
-              <span>
+            {/* পেমেন্ট গেটওয়ে ব্যাজ */}
+            <div className="text-center py-1">
+              <p className="text-[11px] text-slate-400 mb-2 flex items-center justify-center gap-1">
+                <Lock className="w-3 h-3 text-emerald-400" />
                 {language === "English"
                   ? "Secured Payment via:"
                   : "সিকিউরড পেমেন্ট মাধ্যম:"}
-              </span>
-              <span className="text-pink-400 font-bold">bKash</span> •
-              <span className="text-orange-400 font-bold">Nagad</span> •
-              <span className="text-purple-400 font-bold">Rocket</span>
+              </p>
+              <div className="flex items-center justify-center gap-2 font-bold text-xs">
+                <span className="bg-pink-500/10 text-pink-400 px-3 py-1.5 rounded-xl border border-pink-500/20 shadow-sm">
+                  bKash
+                </span>
+                <span className="bg-orange-500/10 text-orange-400 px-3 py-1.5 rounded-xl border border-orange-500/20 shadow-sm">
+                  Nagad
+                </span>
+                <span className="bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-xl border border-purple-500/20 shadow-sm">
+                  Rocket
+                </span>
+              </div>
             </div>
 
-            <div className="space-y-3 pt-1">
+            <div className="space-y-3 pt-2">
+              {/* মেইন চেকআউট বাটন */}
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm tracking-wide rounded-xl shadow-lg shadow-blue-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+                className="w-full py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm tracking-wide rounded-2xl shadow-xl shadow-blue-600/30 transition-all transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
               >
-                {language === "English"
-                  ? "Proceed to Checkout (bKash/Nagad/Rocket)"
-                  : "অর্ডার করুন (bKash/Nagad/Rocket)"}
+                <span>
+                  {language === "English"
+                    ? "Proceed to Checkout"
+                    : "অর্ডার কনফার্ম করুন"}
+                </span>
+                <span className="text-xs font-normal opacity-80">
+                  (bKash/Nagad)
+                </span>
               </button>
 
+              {/* হোয়াটসঅ্যাপ অর্ডার ও হেল্প বাটন */}
               <a
                 href={`https://wa.me/${whatsappNumber}?text=${supportMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 bg-slate-900/60 hover:bg-slate-800 border border-emerald-500/30 text-emerald-400 font-semibold text-xs sm:text-sm tracking-wide rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 bg-[#25D366] hover:bg-[#20ba5a] text-white font-semibold text-xs sm:text-sm tracking-wide rounded-2xl transition-all flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-600/25 relative overflow-hidden group cursor-pointer active:scale-[0.99]"
               >
-                <MessageCircle className="w-4 h-4 fill-current" />
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                {/* Official WhatsApp Logo SVG */}
+                <svg
+                  className="w-5 h-5 fill-current shrink-0"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                </svg>
                 <span>
                   {language === "English"
                     ? "Chat on WhatsApp for Help"
-                    : "সরাসরি WhatsApp-এ চ্যাট করুন"}
+                    : "সরাসরি অর্ডার করতে মেসেজ করুন বা প্রতিনিধির সাথে কথা বলুন"}
                 </span>
               </a>
             </div>
