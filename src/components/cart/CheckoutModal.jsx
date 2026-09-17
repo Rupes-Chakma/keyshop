@@ -95,9 +95,13 @@ export default function CheckoutModal({
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(paymentNumbers[paymentMethod]);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      navigator.clipboard.writeText(paymentNumbers[paymentMethod]);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -139,20 +143,24 @@ export default function CheckoutModal({
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      if (onConfirm && typeof onConfirm === "function") {
-        onConfirm(paymentData);
-      }
+    try {
+      setTimeout(() => {
+        if (onConfirm && typeof onConfirm === "function") {
+          onConfirm(paymentData);
+        }
+        setIsSubmitting(false);
+        setContactInfo("");
+        setSenderNumber("");
+        setTrxId("");
+      }, 800);
+    } catch (error) {
+      console.error("Checkout submission error:", error);
       setIsSubmitting(false);
-      setContactInfo("");
-      setSenderNumber("");
-      setTrxId("");
-    }, 1000);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md animate-fade-in">
-      {/* Responsive width and max height for mobile/desktop user friendliness */}
       <div className="relative w-full max-w-md bg-[#0f172a] border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl text-slate-100 max-h-[92vh] overflow-y-auto">
         {/* Top Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-4">
@@ -162,15 +170,17 @@ export default function CheckoutModal({
             </div>
             <div>
               <h3 className="text-base font-bold text-white tracking-tight">
-                {t("secureCheckout") || "Secure Checkout"}
+                {t ? t("secureCheckout") : "Secure Checkout"}
               </h3>
               <p className="text-xs text-slate-400">
-                {t("completePaymentSecurely") ||
-                  "Complete your payment securely"}
+                {t
+                  ? t("completePaymentSecurely")
+                  : "Complete your payment securely"}
               </p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
           >
@@ -182,7 +192,7 @@ export default function CheckoutModal({
         <div className="flex items-center justify-between bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800/80 rounded-xl p-3.5 mb-4 shadow-inner">
           <div>
             <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
-              {t("totalPayableAmount") || "Total Payable Amount"}
+              {t ? t("totalPayableAmount") : "Total Payable Amount"}
             </span>
             <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 mt-0.5">
               ৳{totalAmount}
@@ -190,7 +200,7 @@ export default function CheckoutModal({
           </div>
           <div className="text-right">
             <span className="inline-block px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-[11px] font-semibold">
-              {t("encryptedAndSecure") || "Encrypted & Secure"}
+              {t ? t("encryptedAndSecure") : "Encrypted & Secure"}
             </span>
           </div>
         </div>
@@ -199,7 +209,7 @@ export default function CheckoutModal({
           {/* 1. Payment Method Selection */}
           <div>
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-              1. {t("selectPaymentMethod") || "Select Payment Method"}
+              1. {t ? t("selectPaymentMethod") : "Select Payment Method"}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {["bKash", "Nagad", "Rocket"].map((method) => {
@@ -233,7 +243,7 @@ export default function CheckoutModal({
           <div className="bg-slate-950/50 border border-slate-800 rounded-xl p-3.5">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                2. {t("sendMoneyToThisNumber") || `Send Money to this number`}
+                2. Send Money to this number
               </span>
               <button
                 type="button"
@@ -241,9 +251,7 @@ export default function CheckoutModal({
                 className="text-xs flex items-center gap-1 text-blue-400 hover:text-blue-300 font-medium transition cursor-pointer"
               >
                 <QrCode className="w-3.5 h-3.5" />
-                {showQR
-                  ? t("viewNumber") || "View Number"
-                  : t("qrCode") || "QR Code"}
+                {showQR ? "View Number" : "QR Code"}
               </button>
             </div>
 
@@ -260,7 +268,7 @@ export default function CheckoutModal({
                   }}
                 />
                 <p className="text-xs text-slate-400 mt-2">
-                  {t("scanWithApp") || `Scan with ${paymentMethod} app`}
+                  Scan with {paymentMethod} app
                 </p>
               </div>
             ) : (
@@ -274,7 +282,7 @@ export default function CheckoutModal({
                   className="flex items-center gap-1 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-1.5 rounded-lg text-slate-200 transition font-medium cursor-pointer active:scale-95"
                 >
                   <Copy className="w-3.5 h-3.5 text-slate-400" />
-                  {copied ? t("copied") || "Copied!" : t("copy") || "Copy"}
+                  {copied ? "Copied!" : "Copy"}
                 </button>
               </div>
             )}
@@ -283,10 +291,10 @@ export default function CheckoutModal({
           {/* 3. Form Inputs */}
           <div className="space-y-3">
             <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
-              3. {t("providePaymentInfo") || "Provide Payment Information"}
+              3. Provide Payment Information
             </label>
 
-            {/* First Input: Contact Info */}
+            {/* Contact Info */}
             <div>
               <input
                 type="text"
@@ -308,7 +316,7 @@ export default function CheckoutModal({
               )}
             </div>
 
-            {/* Second Row Inputs: Sender Number & TrxID */}
+            {/* Sender Number & TrxID */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <input
@@ -317,7 +325,7 @@ export default function CheckoutModal({
                   value={senderNumber}
                   onChange={handlePhoneChange}
                   maxLength={11}
-                  placeholder="Enter payment number (Sender Number)"
+                  placeholder="Sender Number (01XXXXXXXXX)"
                   className={`w-full bg-slate-950/60 border rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none transition font-mono ${
                     senderError
                       ? "border-red-500/80 focus:border-red-500"
@@ -330,39 +338,18 @@ export default function CheckoutModal({
                   type="text"
                   value={trxId}
                   onChange={handleTrxChange}
-                  placeholder={t("trxPlaceholder") || "TrxID (Optional)"}
+                  placeholder="TrxID (Optional)"
                   className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition font-mono uppercase"
                 />
               </div>
             </div>
 
-            {/* Sender Error Message Box */}
             {senderError && (
               <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 p-2.5 rounded-xl text-xs">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{senderError}</span>
               </div>
             )}
-          </div>
-
-          {/* Trusted Payment Badges / Logos */}
-          <div className="pt-2">
-            <div className="flex items-center justify-between px-1 mb-1.5">
-              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-                Supported Gateways
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-2.5 bg-slate-950/40 border border-slate-800/80 py-2.5 px-3 rounded-xl">
-              <span className="bg-pink-500/10 text-pink-400 border border-pink-500/20 px-3 py-1 rounded-md text-xs font-bold tracking-wide">
-                bKash
-              </span>
-              <span className="bg-orange-500/10 text-orange-400 border border-orange-500/20 px-3 py-1 rounded-md text-xs font-bold tracking-wide">
-                Nagad
-              </span>
-              <span className="bg-purple-500/10 text-purple-400 border border-purple-500/20 px-3 py-1 rounded-md text-xs font-bold tracking-wide">
-                Rocket
-              </span>
-            </div>
           </div>
 
           {/* Submit Button */}
@@ -374,12 +361,12 @@ export default function CheckoutModal({
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin text-white" />
-                <span>{t("processing") || "Processing Payment..."}</span>
+                <span>Processing Payment...</span>
               </>
             ) : (
               <>
                 <CheckCircle className="w-4 h-4" />
-                <span>{t("confirmPayment") || "Confirm Payment"}</span>
+                <span>Confirm Payment</span>
               </>
             )}
           </button>

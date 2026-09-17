@@ -1,15 +1,27 @@
 import React, { useState } from "react";
-import { MessageCircle, ShoppingBag, ShieldCheck } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  MessageCircle,
+  ShoppingBag,
+  ShieldCheck,
+  ArrowRight,
+} from "lucide-react";
 
 export default function ProductActionCard({ product }) {
   const [showModal, setShowModal] = useState(false);
   const [userName, setUserName] = useState("");
   const [userPhone, setUserPhone] = useState("");
+  const navigate = useNavigate();
 
   // আপনার WhatsApp নাম্বার (কান্ট্রি কোড সহ)
   const whatsappNumber = "8801648582639";
-  const productName = product?.name || "Digital Software Key";
-  const productPrice = product?.price || "499";
+
+  // প্রোডাক্ট বা এডিশন ডেটা হ্যান্ডেল করার সেফটি চেক
+  const productName =
+    product?.name || product?.versionName || "Digital Software Key";
+  const productPrice = product?.price || "1490";
+  const categoryLabel =
+    product?.categoryName || product?.type || "Software License";
 
   const whatsappMessage = encodeURIComponent(
     `Hello! I want to buy "${productName}" (Price: ৳${productPrice}). Please guide me.`,
@@ -38,61 +50,69 @@ export default function ProductActionCard({ product }) {
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-3 sm:p-5 shadow-xl flex flex-col justify-between transition-all duration-300 w-full">
-      {/* Product Info */}
-      <div>
-        <div className="flex items-center justify-between mb-2.5">
-          {/* উইন্ডোজ লোগো ও ক্যাটাগরি */}
-          <div className="flex items-center gap-1.5">
-            <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
-              <svg
-                className="w-3.5 h-3.5"
-                viewBox="0 0 88 88"
-                fill="currentColor"
-              >
-                <path d="M0 12.402l35.687-4.86V41.51H0V12.402zm35.687 34.088l-.001 30.075L0 71.977V46.49h35.686zM41.51 6.84L88 0v41.51H41.51V6.84zm46.49 44.67L41.51 46.49v34.673L88 88V51.51z" />
-              </svg>
-            </div>
-            <span className="text-[10px] sm:text-[11px] bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 px-2 py-0.5 rounded-full font-semibold line-clamp-1">
-              {product?.categoryName || product?.type || "License"}
-            </span>
-          </div>
+    <div className="group relative bg-gradient-to-b from-slate-900/95 via-slate-900/90 to-slate-950/95 backdrop-blur-xl border border-slate-800/80 hover:border-blue-500/60 rounded-2xl p-4 shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 flex flex-col justify-between transition-all duration-300 overflow-hidden w-full">
+      {/* ব্যাকগ্রাউন্ড প্রিমিয়াম গ্লো ইফেক্ট */}
+      <div className="absolute -right-12 -top-12 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all pointer-events-none"></div>
 
-          <span className="text-green-400 text-[10px] sm:text-[11px] flex items-center gap-1 font-medium">
-            <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Instant
+      <div>
+        {/* টপ সেকশন: ক্যাটাগরি ট্যাগ এবং জেনুইন স্ট্যাম্প */}
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-300 bg-blue-500/15 border border-blue-500/30 px-2.5 py-0.5 rounded-md shadow-sm">
+            {categoryLabel}
+          </span>
+
+          <div className="flex items-center gap-1 text-emerald-400 text-[10px] font-semibold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 shadow-sm">
+            <ShieldCheck className="w-3 h-3 text-emerald-400" />
+            <span>100% Genuine</span>
+          </div>
+        </div>
+
+        {/* প্রোডাক্ট থাম্বনেইল বা ব্যানার এরিয়া (স্ক্রিনশটের মতো স্টাইল) */}
+        <div className="relative rounded-xl overflow-hidden mb-3.5 bg-slate-950 aspect-video border border-slate-800 flex items-center justify-center group-hover:border-blue-500/40 transition-colors">
+          <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-indigo-600/20 opacity-60 group-hover:opacity-100 transition-opacity"></div>
+          <span className="text-lg sm:text-xl font-black text-white tracking-wide text-center px-2 relative z-10 line-clamp-1">
+            {productName}
           </span>
         </div>
 
-        <h3 className="text-sm sm:text-lg font-bold text-white mb-1.5 leading-snug line-clamp-1">
+        {/* প্রোডাক্টের নাম */}
+        <h3 className="text-base font-bold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-1">
           {productName}
         </h3>
 
-        <div className="text-lg sm:text-2xl font-extrabold text-cyan-400 mb-3 flex items-baseline gap-1.5">
-          ৳{productPrice}
-          <span className="text-[11px] sm:text-xs text-slate-400 font-normal line-through">
-            ৳1,500
+        {/* প্রাইস এবং স্টক সেকশন */}
+        <div className="mb-4 flex items-center justify-between bg-slate-950/60 px-3 py-2.5 rounded-xl border border-slate-800/80 shadow-inner">
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-base sm:text-lg font-black text-white font-mono tracking-tight">
+              ৳{productPrice}
+            </span>
+            <span className="text-slate-400 text-[10px] font-medium">
+              / লাইফটাইম
+            </span>
+          </div>
+          <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-medium flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>{" "}
+            In Stock
           </span>
         </div>
       </div>
 
-      {/* Dual Action Buttons */}
-      <div className="space-y-2 pt-3 border-t border-slate-800">
-        {/* Instant Web Order Button */}
+      {/* অ্যাকশন বাটনসমূহ (View Plans / Quick Order) */}
+      <div className="space-y-2 pt-2 border-t border-slate-800/80">
         <button
           onClick={() => setShowModal(true)}
-          className="w-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md shadow-cyan-500/20 text-[11px] sm:text-sm active:scale-95 cursor-pointer"
+          className="w-full py-2.5 px-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25 active:scale-[0.98] cursor-pointer text-xs"
         >
-          <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          <span>Quick Order</span>
+          <ShoppingBag className="w-3.5 h-3.5" />
+          <span>View Plans / Quick Order</span>
         </button>
 
-        {/* Direct WhatsApp Order Button */}
         <button
           onClick={handleWhatsAppOrder}
-          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md shadow-emerald-600/20 text-[11px] sm:text-sm active:scale-95 cursor-pointer"
+          className="w-full py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 font-medium text-[11px] rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer"
         >
-          <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
-          <span>WhatsApp</span>
+          <MessageCircle className="w-3.5 h-3.5 fill-current" />
+          <span>Order via WhatsApp</span>
         </button>
       </div>
 
@@ -105,7 +125,7 @@ export default function ProductActionCard({ product }) {
             </h4>
             <p className="text-xs text-slate-400 mb-4">
               Complete order for:{" "}
-              <span className="text-cyan-400 font-semibold">{productName}</span>
+              <span className="text-blue-400 font-semibold">{productName}</span>
             </p>
 
             <form onSubmit={handleInstantOrder} className="space-y-3 mb-5">
@@ -119,7 +139,7 @@ export default function ProductActionCard({ product }) {
                   onChange={(e) => setUserName(e.target.value)}
                   placeholder="Enter your name"
                   required
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
               <div>
@@ -132,14 +152,14 @@ export default function ProductActionCard({ product }) {
                   onChange={(e) => setUserPhone(e.target.value)}
                   placeholder="01XXXXXXXXX"
                   required
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div className="flex gap-3 pt-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition-colors cursor-pointer"
+                  className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-sm transition-colors cursor-pointer"
                 >
                   Confirm Order
                 </button>

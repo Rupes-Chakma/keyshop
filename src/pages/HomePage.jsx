@@ -18,7 +18,7 @@ export default function HomePage() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search")?.toLowerCase() || "";
 
-  // ভার্সন ফিল্টার এবং সার্চ কুয়েরি অনুযায়ী ফিল্টার করা
+  // ভার্সন ফিল্টার এবং সার্চ কুয়েরি অনুযায়ী ফিল্টার করা
   const filteredData = windowsData
     .map((category) => {
       const filteredEditions = category.editions.filter((edition) => {
@@ -162,14 +162,19 @@ export default function HomePage() {
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-                  {version.editions.map((edition) => (
-                    <ProductCard
-                      key={edition.id}
-                      edition={edition}
-                      versionName={version.versionName}
-                    />
-                  ))}
+                {/* মোবাইল ডিভাইসে কার্ডগুলো ফুল-উইথ (grid-cols-1) করার জন্য রেসপন্সিভ গ্রিড */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                  {version.editions.map((edition) => {
+                    const productObj = {
+                      ...version,
+                      editions: [edition],
+                      versionName: `${version.versionName} - ${edition.name}`,
+                    };
+
+                    return (
+                      <ProductCard key={edition.id} product={productObj} />
+                    );
+                  })}
                 </div>
               </div>
             ))
@@ -178,7 +183,7 @@ export default function HomePage() {
               <p className="text-slate-400 text-sm">
                 {language === "English"
                   ? "No products found matching your search."
-                  : "আপনার সার্চ অনুযায়ী কোনো প্রোডাক্ট পাওয়া যায়নি।"}
+                  : "আপনার সার্চ অনুযায়ী কোনো প্রোডাক্ট পাওয়া যায়নি।"}
               </p>
             </div>
           )}

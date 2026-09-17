@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SEO from "../components/SEO";
 import { useLanguage } from "../context/LanguageContext";
 import VersionFilter from "../components/product/VersionFilter";
-import ProductActionCard from "../components/product/ProductActionCard";
+import ProductCard from "../product/ProductCard"; // আপনার পাথ অনুযায়ী ঠিক করে নেবেন
 import { windowsData } from "../data/windowsData";
 import PromoVideo from "./PromoVideo";
 import FAQ from "./FAQ";
@@ -11,20 +11,11 @@ export default function HomePage() {
   const { t } = useLanguage();
   const [selectedVersion, setSelectedVersion] = useState("all");
 
-  // সব সংস্করণ থেকে প্রোডাক্টগুলো ফ্ল্যাট অ্যারেতে রূপান্তর
-  const allProducts = windowsData.flatMap((category) =>
-    category.editions.map((edition) => ({
-      ...edition,
-      categoryId: category.id,
-      categoryName: category.versionName,
-    })),
-  );
-
-  // নিখুঁত ফিল্টারিং লজিক
-  const filteredProducts =
-    selectedVersion === "all"
-      ? allProducts
-      : allProducts.filter((item) => item.categoryId === selectedVersion);
+  // ফিল্টার অনুযায়ী ক্যাটাগরি বা ভার্সন ফিল্টার করার লজিক
+  const filteredCategories = windowsData.filter((category) => {
+    if (selectedVersion === "all") return true;
+    return category.id === selectedVersion;
+  });
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4">
@@ -44,14 +35,14 @@ export default function HomePage() {
           setSelectedVersion={setSelectedVersion}
         />
 
-        {/* Product Cards Grid */}
+        {/* প্রোডাক্ট কার্ডগুলোর রেসপন্সিভ গ্রিড */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
-          {filteredProducts && filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <ProductActionCard key={product.id} product={product} />
+          {filteredCategories && filteredCategories.length > 0 ? (
+            filteredCategories.map((category) => (
+              <ProductCard key={category.id} product={category} />
             ))
           ) : (
-            <p className="text-center text-slate-500 col-span-full py-10">
+            <p className="text-center text-slate-400 col-span-full py-10">
               No products found for this filter.
             </p>
           )}

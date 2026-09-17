@@ -1,101 +1,113 @@
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, ShieldCheck, Sparkles, ArrowRight } from "lucide-react";
-import { CartContext } from "../../context/CartContext";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ShieldCheck, ArrowRight, KeyRound, Sparkles } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
 
-export default function ProductCard({ edition, versionName }) {
-  const { addToCart, cart } = useContext(CartContext);
-  const { t } = useLanguage();
+export default function ProductCard({ product }) {
+  const { language } = useLanguage();
   const navigate = useNavigate();
 
-  const isInCart = cart.some((item) => item.id === edition.id);
+  if (!product) return null;
 
-  const handleBuyNow = () => {
-    if (!isInCart) {
-      addToCart({ ...edition, versionName });
-    }
-    navigate("/cart");
+  const editions = product.editions || [];
+  const minPrice =
+    editions.length > 0
+      ? Math.min(...editions.map((e) => e.price))
+      : product.price || 1190;
+
+  const handleViewPlans = () => {
+    navigate(`/product/${product.id}`);
   };
 
+  let displayName = product.versionName || product.name || "Software License";
+  displayName = displayName
+    .replace(/Windows 11\s*-\s*Windows 11/gi, "Windows 11")
+    .replace(/Windows 10\s*-\s*Windows 10/gi, "Windows 10")
+    .replace(/Windows 7\s*-\s*Windows 7/gi, "Windows 7")
+    .replace(/MS Office\s*-\s*Microsoft Office/gi, "Microsoft Office");
+
+  const isOffice = displayName.toLowerCase().includes("office");
+
   return (
-    <div className="group relative bg-gradient-to-b from-slate-900/95 via-slate-900/90 to-slate-950/95 backdrop-blur-xl border border-slate-800/80 hover:border-blue-500/60 rounded-2xl p-3.5 sm:p-5 shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 flex flex-col justify-between transition-all duration-300 overflow-hidden w-full">
-      {/* ব্যাকগ্রাউন্ড প্রিমিয়াম গ্লো ইফেক্ট */}
-      <div className="absolute -right-12 -top-12 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all pointer-events-none"></div>
-
+    <div className="group relative bg-[#0B0F17] hover:bg-[#111827] border border-slate-800/80 hover:border-blue-500/50 rounded-2xl p-5 shadow-xl transition-all duration-300 w-full flex flex-col justify-between">
       <div>
-        {/* টপ সেকশন: লোগো, ব্যাজ এবং জেনুইন স্ট্যাম্প */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            {/* উইন্ডোজ লোগো */}
-            <svg
-              className="w-4 h-4 text-blue-400 shrink-0 group-hover:scale-110 transition-transform"
-              viewBox="0 0 88 88"
-              fill="currentColor"
-            >
-              <path d="M0 12.402l35.687-4.86V41.51H0V12.402zm35.687 34.088l-.001 30.075L0 71.977V46.49h35.686zM41.51 6.84L88 0v41.51H41.51V6.84zm46.49 44.67L41.51 46.49v34.673L88 88V51.51z" />
-            </svg>
-            {/* এডিশন টাইপ ব্যাজ */}
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-300 bg-blue-500/15 border border-blue-500/30 px-2 py-0.5 rounded-md shadow-sm">
-              {edition.type}
-            </span>
-          </div>
+        {/* টপ ক্যাটাগরি এবং স্ট্যাটাস */}
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-[10px] font-bold tracking-wider text-blue-400 uppercase bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20">
+            {product.category || "LICENSE KEY"}
+          </span>
 
-          {/* জেনুইন ব্যাজ */}
-          <div className="flex items-center gap-1 text-emerald-400 text-[10px] font-semibold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 shadow-sm">
+          <div className="flex items-center gap-1 text-emerald-400 text-[10px] font-medium bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
             <ShieldCheck className="w-3 h-3 text-emerald-400" />
-            <span className="hidden sm:inline">
-              {t("genuineKey") || "100% Genuine"}
-            </span>
+            <span>Verified</span>
           </div>
         </div>
 
-        {/* প্রোডাক্ট নাম */}
-        <h3 className="text-sm sm:text-base font-bold text-white mb-1 group-hover:text-blue-400 transition-colors line-clamp-1 leading-snug">
-          {edition.name}
-        </h3>
-
-        {/* শর্ট ডেসক্রিপশন */}
-        <p className="text-slate-400 text-[11px] sm:text-xs mb-3.5 leading-relaxed line-clamp-2">
-          {edition.descKey ? t(edition.descKey) : edition.desc}
-        </p>
-
-        {/* প্রাইস সেকশন (প্রিমিয়াম কার্ড লুক) */}
-        <div className="mb-4 flex items-center justify-between bg-slate-950/60 px-3 py-2.5 rounded-xl border border-slate-800/80 shadow-inner">
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-lg sm:text-2xl font-black text-white font-mono tracking-tight">
-              {t("currencySymbol") || "৳"}
-              {edition.price}
-            </span>
-            <span className="text-slate-400 text-[10px] sm:text-xs font-medium">
-              {t("lifetimeLabel") || "/ লাইফটাইম"}
-            </span>
+        {/* মেইন প্রডাক্ট টাইটেল বক্স */}
+        <div className="relative rounded-xl overflow-hidden mb-4 bg-[#07090E] p-4 border border-slate-800/90 flex flex-col items-center justify-center text-center min-h-[115px]">
+          {/* ব্যাকগ্রাউন্ড ওয়াটারমার্ক (এখানে text-blue-500 বা আপনার পছন্দমতো কালার দিতে পারেন) */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.14] group-hover:opacity-[0.22] transition-opacity duration-300">
+            {isOffice ? (
+              <span className="text-7xl font-black font-mono tracking-tighter text-blue-500">
+                OFFICE
+              </span>
+            ) : (
+              <div className="grid grid-cols-2 gap-1.5 w-20 h-20 transform rotate-6">
+                <div className="bg-blue-600 rounded-sm"></div>
+                <div className="bg-indigo-500 rounded-sm"></div>
+                <div className="bg-blue-500 rounded-sm"></div>
+                <div className="bg-cyan-500 rounded-sm"></div>
+              </div>
+            )}
           </div>
-          <span className="text-[10px] text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 font-medium">
-            Official
+
+          <h3 className="text-base font-extrabold text-white tracking-wide relative z-10 mb-2 line-clamp-2 px-1">
+            {displayName}
+          </h3>
+
+          <span className="text-[11px] font-medium text-slate-300 bg-slate-900 px-3 py-0.5 rounded-md border border-slate-800 flex items-center gap-1.5 relative z-10">
+            <KeyRound className="w-3 h-3 text-blue-400" />
+            <span>
+              {editions.length > 0
+                ? `${editions.length} ${language === "English" ? "Editions Available" : "টি এডিশন উপলব্ধ"}`
+                : "Lifetime License"}
+            </span>
+          </span>
+        </div>
+
+        {/* প্রাইস এবং স্টক */}
+        <div className="mb-4 flex items-center justify-between bg-[#07090E]/60 px-3.5 py-3 rounded-xl border border-slate-800/80">
+          <div className="flex flex-col">
+            <span className="text-[9px] text-slate-400 uppercase tracking-wider font-semibold">
+              {language === "English" ? "Starts From" : "মূল্য শুরু"}
+            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-lg font-black text-white font-mono tracking-tight">
+                ৳{minPrice}
+              </span>
+              <span className="text-slate-400 text-[10px]">
+                / {language === "English" ? "lifetime" : "লাইফটাইম"}
+              </span>
+            </div>
+          </div>
+
+          <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg font-medium flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            {language === "English" ? "In Stock" : "স্টকে আছে"}
           </span>
         </div>
       </div>
 
-      {/* অ্যাকশন বাটনসমূহ */}
-      <div className="space-y-2 pt-2 border-t border-slate-800/80">
-        {/* বাই নাও বাটন (গ্রেডিয়েন্ট ও শ্যাডো এফেক্ট সহ) */}
+      {/* ভিউ প্ল্যানস বাটন */}
+      <div className="pt-2 border-t border-slate-800/80">
         <button
-          onClick={handleBuyNow}
-          className="w-full py-2.5 px-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25 active:scale-[0.98] cursor-pointer text-xs"
+          onClick={handleViewPlans}
+          className="w-full py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-blue-600 hover:bg-blue-500 text-white text-xs uppercase tracking-wider shadow-lg shadow-blue-600/20 cursor-pointer active:scale-[0.98]"
         >
-          <ShoppingBag className="w-3.5 h-3.5" />
-          <span>{t("buyNow") || "এখনই কিনুন (Buy Now)"}</span>
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>{language === "English" ? "View Plans" : "প্লান দেখুন"}</span>
+          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
         </button>
-
-        {/* ডিটেইলস লিংক */}
-        <Link
-          to={`/product/${edition.id}`}
-          className="w-full py-1.5 bg-slate-800/40 hover:bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px] rounded-lg transition-all flex items-center justify-center gap-1 group/link"
-        >
-          <span>{t("viewDetails") || "বিস্তারিত দেখুন"}</span>
-          <ArrowRight className="w-3 h-3 text-slate-400 group-hover/link:translate-x-0.5 transition-transform" />
-        </Link>
       </div>
     </div>
   );
