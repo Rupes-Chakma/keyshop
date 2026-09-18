@@ -1,215 +1,143 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Star,
+  CheckCircle,
+  Quote,
   ChevronLeft,
   ChevronRight,
-  Quote,
-  CheckCircle2,
 } from "lucide-react";
+// import { useLanguage } from "../../context/LanguageContext";
 import { useLanguage } from "../context/LanguageContext";
 
 export default function ReviewSlider() {
-  const scrollRef = useRef(null);
   const { language } = useLanguage();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const reviews = [
+  const reviewsData = [
     {
       id: 1,
-      img: "/assets/reviews/reviews1.png",
-      name: "সুমাইয়া আক্তার",
-      nameEn: "Sumaiya Akter",
-      review:
-        "সার্ভিস এক কথায় অসাধারণ! অর্ডার করার পর খুব দ্রুত প্রোডাক্ট পেয়েছি। প্রোডাক্টের মান দেখে আমি মুগ্ধ। ধন্যবাদ আপনাদের!",
-      reviewEn:
-        "Service is simply amazing! Received the product very quickly. Impressed by the quality. Thank you!",
+      name: "Rashedul Islam",
+      product: "Windows 11 Pro",
+      rating: 5,
+      date: "2 days ago",
+      text: "Got the license key instantly within 1 minute! Activated successfully without any issues. Highly recommended.",
     },
     {
       id: 2,
-      img: "/assets/reviews/reviews2.png",
-      name: "আরিফুল ইসলাম",
-      nameEn: "Ariful Islam",
-      review:
-        "অনলাইনে অনেক শপিং করেছি, কিন্তু আপনাদের সার্ভিস আমার কাছে সবচেয়ে ভালো লেগেছে। প্রোডাক্ট ১০০% অরিজিনাল।",
-      reviewEn:
-        "I've shopped online a lot, but your service is the best. 100% original product.",
+      name: "Tanim Ahmed",
+      product: "Windows 10 Pro",
+      rating: 5,
+      date: "1 week ago",
+      text: "Product quality is truly fantastic. Got exactly what was promised. Support team is also very helpful.",
     },
     {
       id: 3,
-      img: "/assets/reviews/reviews3.png",
-      name: "তানিয়া ইসলাম",
-      nameEn: "Tania Islam",
-      review:
-        "প্রোডাক্টের কোয়ালিটি সত্যিই চমৎকার। যেমনটা দেখেছিলাম, ঠিক তেমনই পেয়েছি। কাস্টমার সাপোর্টও খুবই হেল্পফুল।",
-      reviewEn:
-        "Product quality is truly fantastic. Got exactly what I saw. Customer support is also very helpful.",
-    },
-    {
-      id: 4,
-      img: "/assets/reviews/reviews4.png",
-      name: "তানভীর হোসাইন",
-      nameEn: "Tanvir Hossain",
-      review:
-        "খুব কম সময়ে জেনুইন লাইসেন্স কি পেয়েছি। কোনো ঝামেলা ছাড়াই অ্যাক্টিভেশন সম্পন্ন হয়েছে। হাইলি রিকমেন্ডেড!",
-      reviewEn:
-        "Got the genuine license key in no time. Activation was smooth without any hassle. Highly recommended!",
-    },
-    {
-      id: 5,
-      img: "/assets/reviews/reviews5.png",
-      name: "সাকিব হাসান",
-      nameEn: "Sakib Hasan",
-      review:
-        "বিশ্বস্ত একটি পেজ। দামেও কম এবং সাপোর্টও খুব ফাস্ট। ভবিষ্যতে আরও নিব ইনশাআল্লাহ।",
-      reviewEn:
-        "A trustworthy page. Affordable price and very fast support. Will buy more in sha Allah.",
+      name: "Sajib Rahman",
+      product: "Windows 11 Home",
+      rating: 5,
+      date: "2 weeks ago",
+      text: "Genuine activation key at a very affordable price. Saved a lot of money. Thank you KeyShop BD!",
     },
   ];
 
-  const handleScroll = (direction) => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
-      const scrollAmount = 400;
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % reviewsData.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [reviewsData.length]);
 
-      if (direction === "right") {
-        if (scrollLeft + clientWidth >= scrollWidth - 20) {
-          scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          scrollRef.current.scrollTo({
-            left: scrollLeft + scrollAmount,
-            behavior: "smooth",
-          });
-        }
-      } else {
-        if (scrollLeft <= 0) {
-          scrollRef.current.scrollTo({
-            left: scrollWidth,
-            behavior: "smooth",
-          });
-        } else {
-          scrollRef.current.scrollTo({
-            left: scrollLeft - scrollAmount,
-            behavior: "smooth",
-          });
-        }
-      }
-    }
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? reviewsData.length - 1 : prev - 1));
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleScroll("right");
-    }, 4500);
-
-    return () => clearInterval(interval);
-  }, []);
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % reviewsData.length);
+  };
 
   return (
-    <section className="py-20 bg-slate-950 relative overflow-hidden">
-      {/* Background Glow Accents */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 blur-[140px] pointer-events-none rounded-full"></div>
-
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-20">
-          <div className="inline-flex items-center gap-2 text-amber-400 bg-amber-400/10 border border-amber-400/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 shadow-lg shadow-amber-500/5">
-            <Star className="w-4 h-4 fill-amber-400" />
-            <span>
-              {language === "English"
-                ? "Customer Satisfaction & Reviews"
-                : "গ্রাহকদের সন্তুষ্টি ও রিভিউ"}
-            </span>
+    <section className="py-12 px-4 relative overflow-hidden bg-slate-950/50 border-t border-slate-800/60">
+      <div className="max-w-xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-1.5 bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 rounded-full text-cyan-400 text-xs font-semibold mb-3">
+            <Star className="w-3.5 h-3.5 fill-current text-yellow-400" />
+            <span>Verified Customer Reviews</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-            {language === "English"
-              ? "Trusted by Our Clients"
-              : "আমাদের সম্মানিত গ্রাহকগণ"}
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+            Trusted by Our Clients
           </h2>
-          <p className="text-slate-400 text-sm md:text-base leading-relaxed">
-            {language === "English"
-              ? "Real experiences and reviews shared by our valued customers."
-              : "দেশজুড়ে আমাদের সম্মানিত গ্রাহকদের শেয়ার করা আসল অভিজ্ঞতা।"}
+          <p className="text-slate-400 text-xs sm:text-sm">
+            Real experiences and reviews shared by our valued customers.
           </p>
         </div>
 
-        {/* Navigation Buttons */}
-        <button
-          onClick={() => handleScroll("left")}
-          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-slate-900/90 hover:bg-blue-600 text-white p-3.5 rounded-full border border-slate-700/80 backdrop-blur-md transition-all shadow-2xl hidden md:flex items-center justify-center group"
-          aria-label="Previous"
-        >
-          <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-        </button>
+        {/* Single Card Carousel for Mobile Perfection */}
+        <div className="relative">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-xl relative">
+            <Quote className="absolute top-4 right-4 w-8 h-8 text-slate-800/60 pointer-events-none" />
 
-        <button
-          onClick={() => handleScroll("right")}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-slate-900/90 hover:bg-blue-600 text-white p-3.5 rounded-full border border-slate-700/80 backdrop-blur-md transition-all shadow-2xl hidden md:flex items-center justify-center group"
-          aria-label="Next"
-        >
-          <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-        </button>
-
-        {/* Sliding Cards Container */}
-        <div
-          ref={scrollRef}
-          className="flex gap-8 overflow-x-auto scroll-smooth no-scrollbar py-8 px-4 snap-x snap-mandatory"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          {reviews.map((rev) => (
-            <div
-              key={rev.id}
-              className="min-w-[320px] sm:min-w-[380px] md:min-w-[420px] bg-slate-900/80 backdrop-blur-xl border border-slate-800 hover:border-blue-500/50 rounded-3xl p-8 pt-12 snap-center shrink-0 transition-all duration-300 shadow-2xl flex flex-col justify-between relative group mt-6"
-            >
-              {/* Top Left Floating Avatar (Inspired by your reference image) */}
-              <div className="absolute -top-7 left-8">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl overflow-hidden border-4 border-slate-950 bg-slate-900 shadow-xl group-hover:scale-105 transition-transform duration-300">
-                  <img
-                    src={rev.img}
-                    alt={language === "English" ? rev.nameEn : rev.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                {/* Verified Dot */}
-                <div className="absolute -bottom-1 -right-1 bg-blue-600 text-white p-0.5 rounded-full border-2 border-slate-950">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                </div>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow">
+                {reviewsData[currentIndex].name.charAt(0)}
               </div>
-
-              {/* Main Content */}
               <div>
-                {/* Name & Verified Tag */}
-                <div className="flex flex-col mb-4 pt-2">
-                  <h3 className="text-white font-extrabold text-xl md:text-2xl tracking-wide group-hover:text-blue-400 transition-colors">
-                    {language === "English" ? rev.nameEn : rev.name}
-                  </h3>
-                  <span className="text-xs text-blue-400 font-medium mt-0.5">
-                    {language === "English"
-                      ? "Verified Customer"
-                      : "ভেরিফাইড কাস্টমার"}
-                  </span>
-                </div>
-
-                {/* Review Text */}
-                <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6 font-normal">
-                  "{language === "English" ? rev.reviewEn : rev.review}"
+                <h4 className="text-white text-sm font-bold flex items-center gap-1">
+                  {reviewsData[currentIndex].name}
+                  <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                </h4>
+                <p className="text-slate-400 text-[11px]">
+                  {reviewsData[currentIndex].product} •{" "}
+                  {reviewsData[currentIndex].date}
                 </p>
               </div>
-
-              {/* Bottom: Stars & Quote Icon */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-800/80 mt-auto">
-                {/* Rating Stars */}
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 fill-amber-400 text-amber-400"
-                    />
-                  ))}
-                </div>
-
-                {/* Quote Icon */}
-                <Quote className="w-8 h-8 text-slate-700/60 group-hover:text-blue-500/40 transition-colors rotate-180" />
-              </div>
             </div>
+
+            <div className="flex gap-1 text-yellow-400 mb-2">
+              {[...Array(reviewsData[currentIndex].rating)].map((_, i) => (
+                <Star key={i} className="w-3.5 h-3.5 fill-current" />
+              ))}
+            </div>
+
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4 italic">
+              "{reviewsData[currentIndex].text}"
+            </p>
+
+            <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-emerald-400">
+              <span className="flex items-center gap-1 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                <CheckCircle className="w-3 h-3" /> Verified Purchase
+              </span>
+              <span className="text-slate-400">100% Genuine</span>
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <button
+            onClick={prevSlide}
+            className="absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-slate-900 border border-slate-700 text-cyan-400 hover:bg-slate-800 transition shadow-md z-20"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-slate-900 border border-slate-700 text-cyan-400 hover:bg-slate-800 transition shadow-md z-20"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Dots */}
+        <div className="flex justify-center items-center gap-1.5 mt-4">
+          {reviewsData.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                currentIndex === index
+                  ? "w-5 bg-cyan-500"
+                  : "w-1.5 bg-slate-800"
+              }`}
+            />
           ))}
         </div>
       </div>
