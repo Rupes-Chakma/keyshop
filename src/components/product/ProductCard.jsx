@@ -106,11 +106,11 @@ export default function ProductCard({ product }) {
             </span>
           </div>
 
-          {/* Top Right Cart Icon Button - Always accessible on mobile */}
-          <div className="absolute top-2 right-2">
+          {/* Top Right Cart Icon Button - Smooth hover & touch transition */}
+          <div className="absolute top-2 right-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-1 group-hover:translate-y-0 transition-all duration-300 ease-out">
             <button
               onClick={handleCartClick}
-              className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-900/90 hover:bg-blue-600 text-slate-200 hover:text-white rounded-full shadow-md border border-slate-700 flex items-center justify-center transition-all duration-200 active:scale-90"
+              className="w-7 h-7 sm:w-8 sm:h-8 bg-slate-900/95 hover:bg-blue-600 text-slate-200 hover:text-white rounded-full shadow-lg border border-slate-700 flex items-center justify-center transition-all duration-200 active:scale-90"
               title="Add to Cart"
             >
               <ShoppingCart className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
