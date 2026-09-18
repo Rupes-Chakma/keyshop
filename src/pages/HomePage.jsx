@@ -162,8 +162,8 @@ export default function HomePage() {
                   </h3>
                 </div>
 
-                {/* মোবাইল ডিভাইসে কার্ডগুলো ফুল-উইথ (grid-cols-1) করার জন্য রেসপন্সিভ গ্রিড */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                {/* মোবাইল ডিভাইসে ২ কলাম (grid-cols-2) এবং বড় স্ক্রিনে ৩/৪ কলাম করার ফিক্স */}
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                   {version.editions.map((edition) => {
                     const productObj = {
                       ...version,

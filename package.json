@@ -16,7 +16,7 @@
     "react": "^18.x.x",
     "react-dom": "^18.x.x",
     "react-helmet-async": "^2.x.x",
-    "react-hot-toast": "^2.6.0",
+    "react-hot-toast": "^2.6.1",
     "react-router-dom": "^6.x.x",
     "swiper": "^14.2.0"
   },

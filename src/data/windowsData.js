@@ -2,6 +2,7 @@ export const windowsData = [
   {
     id: "win11",
     versionName: "Windows 11",
+    image: "/images/win11-banner.jpg",
     editions: [
       {
         id: "win11-pro-retail",
@@ -46,6 +47,7 @@ export const windowsData = [
   {
     id: "win10",
     versionName: "Windows 10",
+    image: "/images/win10-banner.jpg",
     editions: [
       {
         id: "win10-pro-retail",
@@ -109,6 +111,7 @@ export const windowsData = [
   {
     id: "win8-1",
     versionName: "Windows 8.1",
+    image: "/images/win365-banner.jpg",
     editions: [
       {
         id: "win8-1-pro-oem",
@@ -127,6 +130,7 @@ export const windowsData = [
   {
     id: "win7",
     versionName: "Windows 7",
+    image: "/images/win365-banner.jpg",
     editions: [
       {
         id: "win7-all",
@@ -141,6 +145,7 @@ export const windowsData = [
   {
     id: "win-server",
     versionName: "Windows Server",
+    image: "/images/win365-banner.jpg",
     editions: [
       {
         id: "win-server-2022",
@@ -171,6 +176,7 @@ export const windowsData = [
   {
     id: "ms-office",
     versionName: "MS Office",
+    image: "/images/win11-banner.jpg",
     editions: [
       {
         id: "office-2021",

@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { CartContext } from "../context/CartContext";
 import { useLanguage } from "../context/LanguageContext";
-import { windowsData } from "../data/windowsData"; // আপনার সঠিক পাথ অনুযায়ী এটি ঠিক করে নেবেন
-import CheckoutModal from "../components/cart/CheckoutModal"; // চেকআউট মোডাল ইমপোর্ট
+import { windowsData } from "../data/windowsData";
+import CheckoutModal from "../components/cart/CheckoutModal";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -23,24 +23,23 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false); // মোডাল ওপেন/ক্লোজ স্টেট
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
-  // প্রডাক্ট পেজে ঢোকার সাথে সাথে স্ক্রিন একদম উপরে নিয়ে যাওয়ার ফিক্স
+  // প্রডাক্ট পেজে ঢোকার সাথে সাথে স্ক্রিন একদম উপরে নিয়ে যাওয়ার ফিক্স
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // স্মুথলি স্ক্রিন উপরে উঠবে
+      behavior: "smooth",
     });
   }, [id]);
 
   useEffect(() => {
-    // URL থেকে id নিয়ে windowsData থেকে সঠিক প্রডাক্ট খুঁজে বের করা
     const foundProduct = windowsData.find((p) => p.id === id);
 
     if (foundProduct) {
       setProduct(foundProduct);
     } else {
-      setProduct(windowsData[0]); // ফলব্যাক হিসেবে প্রথম প্রডাক্ট
+      setProduct(windowsData[0]);
     }
 
     setSelectedOptionIndex(0);
@@ -58,7 +57,6 @@ export default function ProductDetails() {
   const currentOption = options[selectedOptionIndex] || options[0];
   const totalPrice = Number(currentOption.price) * quantity;
 
-  // Proceed to Checkout বাটনে ক্লিক করলে মোডাল ওপেন হবে এবং কার্টেও এড হয়ে থাকবে
   const handleOpenCheckout = () => {
     try {
       addToCart({
@@ -69,18 +67,17 @@ export default function ProductDetails() {
         price: currentOption.price,
         quantity: quantity,
       });
-      setIsCheckoutOpen(true); // মোডাল ওপেন করা
+      setIsCheckoutOpen(true);
     } catch (error) {
       console.error("Cart error:", error);
     }
   };
 
-  // মোডালে পেমেন্ট কনফার্ম করার পর যা হবে
   const handlePaymentConfirm = (paymentData) => {
     console.log("Payment Confirmed Successfully:", paymentData);
     setIsCheckoutOpen(false);
     alert("Order placed successfully! We will deliver your key soon.");
-    navigate("/"); // সফলভাবে অর্ডার শেষে হোমপেজে পাঠিয়ে দেওয়া
+    navigate("/");
   };
 
   const handleWhatsAppChat = () => {
@@ -129,11 +126,19 @@ export default function ProductDetails() {
                 </p>
               </div>
 
-              {/* প্রডাক্ট লোগো বা আইকন */}
-              <div className="relative z-15 w-20 h-20 sm:w-24 sm:h-24 shrink-0 bg-slate-900 border border-slate-700/60 rounded-xl flex items-center justify-center text-slate-500 text-xs text-center p-2 shadow-inner">
-                <span className="text-[10px] font-medium text-slate-400">
-                  {product.versionName}
-                </span>
+              {/* প্রডাক্ট ইমেজ ব্যানার */}
+              <div className="relative z-15 w-24 h-24 sm:w-28 sm:h-28 shrink-0 bg-slate-900 border border-slate-700/60 rounded-xl overflow-hidden flex items-center justify-center shadow-inner">
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt={product.versionName}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-[10px] font-medium text-slate-400 text-center p-2">
+                    {product.versionName}
+                  </span>
+                )}
               </div>
             </div>
 

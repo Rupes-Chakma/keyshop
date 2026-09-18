@@ -1,12 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
-import { LanguageProvider } from "./context/LanguageContext"; // If you want to provide Language Context here
+import { LanguageProvider } from "./context/LanguageContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-import ScrollToTopButton from "./components/layout/ScrollToTopButton"; // 1. Import ScrollToTopButton component
-import LiveChat from "./components/trust/LiveChat"; // Import LiveChat component
+import ScrollToTopButton from "./components/layout/ScrollToTopButton";
+import LiveChat from "./components/trust/LiveChat";
 import AppRoutes from "./routes/AppRoutes";
+import { Toaster } from "react-hot-toast"; // ১. Toaster import korun
 
 export default function App() {
   return (
@@ -26,6 +27,9 @@ export default function App() {
 
       {/* Floating Live Chat widget placed outside the Router to stay persistent across all pages */}
       <LiveChat />
+
+      {/* ২. Toaster component ekhane add korun jate sob page theke message show kore */}
+      <Toaster position="bottom-center" reverseOrder={false} />
     </CartProvider>
   );
 }
