@@ -22,10 +22,9 @@ export default function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
-  // প্রডাক্ট পেজে ঢোকার সাথে সাথে স্ক্রিন একদম উপরে নিয়ে যাওয়ার ফিক্স
+  // Product page-e dhokar sathe sathe screen ekdom upore niye jawar fix
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -55,7 +54,7 @@ export default function ProductDetails() {
 
   const options = product.editions || [];
   const currentOption = options[selectedOptionIndex] || options[0];
-  const totalPrice = Number(currentOption.price) * quantity;
+  const totalPrice = Number(currentOption.price);
 
   const handleOpenCheckout = () => {
     try {
@@ -65,7 +64,7 @@ export default function ProductDetails() {
         versionName: product.versionName,
         type: currentOption.type,
         price: currentOption.price,
-        quantity: quantity,
+        quantity: 1,
       });
       setIsCheckoutOpen(true);
     } catch (error) {
@@ -89,61 +88,65 @@ export default function ProductDetails() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 text-slate-100">
+    <div className="max-w-7xl mx-auto px-4 py-8 text-slate-100 pb-12">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* বাম পাশ: ব্যাক বাটন, ডাইনামিক প্রডাক্ট টাইটেল এবং এডিশন লিস্ট */}
+        {/* Bam pas: Back button, Product header & options */}
         <div className="lg:col-span-7 space-y-6">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900/80 border border-slate-800 px-3.5 py-2 rounded-xl transition-all hover:border-slate-700 cursor-pointer"
+            className="flex items-center gap-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-800/90 border border-slate-700 px-3.5 py-2 rounded-xl transition-all hover:border-blue-500/50 cursor-pointer shadow-md"
           >
             <ArrowLeft className="w-4 h-4 text-blue-400" />
             <span>Back to Products</span>
           </button>
 
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
-            {/* প্রডাক্ট হেডার ব্যানার */}
-            <div className="relative rounded-xl overflow-hidden bg-slate-950 p-6 border border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/5 to-transparent pointer-events-none"></div>
+          <div className="bg-slate-900/95 border border-slate-800/80 rounded-2xl p-6 shadow-2xl space-y-6 backdrop-blur-xl">
+            {/* Product Header Banner (More Premium, Vibrant & Rich Look) */}
+            <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950/40 to-slate-950 p-6 sm:p-8 border border-blue-500/20 shadow-2xl flex flex-col items-center text-center space-y-4">
+              {/* Vibrant ambient background glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 bg-blue-500/15 blur-[60px] rounded-full pointer-events-none"></div>
 
-              <div className="space-y-2 relative z-10 text-center sm:text-left">
-                <div className="flex items-center justify-center sm:justify-start gap-2">
-                  <span className="text-[10px] font-extrabold uppercase bg-blue-500/15 text-blue-400 px-2.5 py-0.5 rounded-md border border-blue-500/35">
-                    {product.versionName}
-                  </span>
-                  <div className="flex items-center gap-1 text-emerald-400 text-[10px] font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                    <ShieldCheck className="w-3 h-3" />
-                    <span>100% Genuine Key</span>
-                  </div>
-                </div>
-
-                <h1 className="text-xl sm:text-2xl font-black text-white">
-                  {currentOption.name}
-                </h1>
-
-                <p className="text-xs text-blue-400 font-medium">
-                  Type: {currentOption.type}
-                </p>
-              </div>
-
-              {/* প্রডাক্ট ইমেজ ব্যানার */}
-              <div className="relative z-15 w-24 h-24 sm:w-28 sm:h-28 shrink-0 bg-slate-900 border border-slate-700/60 rounded-xl overflow-hidden flex items-center justify-center shadow-inner">
-                {product.image ? (
+              {/* Product Image Frame with Glossy Look */}
+              {product.image && (
+                <div className="relative group z-10 w-full max-w-[280px] h-[160px] rounded-2xl overflow-hidden shadow-2xl border border-blue-400/30 bg-slate-950 mb-1 ring-2 ring-blue-500/20 transition-transform duration-300 hover:scale-[1.02]">
                   <img
                     src={product.image}
                     alt={product.versionName}
                     className="w-full h-full object-cover"
                   />
-                ) : (
-                  <span className="text-[10px] font-medium text-slate-400 text-center p-2">
-                    {product.versionName}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+                </div>
+              )}
+
+              {/* Badges */}
+              <div className="relative z-10 flex items-center justify-center gap-2 flex-wrap pt-1">
+                <span className="text-[11px] font-black uppercase bg-blue-600/30 text-blue-200 px-4 py-1 rounded-full border border-blue-400/40 shadow-md backdrop-blur-md tracking-wider">
+                  {product.versionName}
+                </span>
+                <div className="flex items-center gap-1.5 text-emerald-200 text-[11px] font-bold bg-emerald-600/25 px-3.5 py-1 rounded-full border border-emerald-400/30 shadow-md backdrop-blur-md">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>100% Genuine Key</span>
+                </div>
+              </div>
+
+              {/* Main Product Name */}
+              <h1 className="relative z-10 text-2xl sm:text-3xl font-black text-white tracking-tight drop-shadow-md">
+                {currentOption.name}
+              </h1>
+
+              {/* Type Subtitle */}
+              <div className="relative z-10 bg-slate-900/90 border border-slate-700/80 px-4 py-1.5 rounded-xl shadow-inner">
+                <p className="text-xs text-slate-200 font-medium">
+                  Type:{" "}
+                  <span className="text-blue-400 font-bold">
+                    {currentOption.type}
                   </span>
-                )}
+                </p>
               </div>
             </div>
 
-            {/* গ্যারান্টি বা নোট */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-300 bg-slate-950/50 p-4 rounded-xl border border-slate-800/80">
+            {/* Guarantee notes */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-200 bg-slate-950/70 p-4 rounded-xl border border-slate-800 shadow-inner">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>Lifetime activation with official updates</span>
@@ -154,11 +157,13 @@ export default function ProductDetails() {
               </div>
             </div>
 
-            {/* এডিশন অপশনগুলো */}
+            {/* Editions options */}
             <div className="space-y-3">
-              <div className="flex justify-between items-center text-xs text-slate-400 font-medium uppercase tracking-wider">
+              <div className="flex justify-between items-center text-xs text-slate-300 font-bold uppercase tracking-wider px-1">
                 <span>Select Edition / Plan</span>
-                <span>{options.length} Options Available</span>
+                <span className="text-blue-400">
+                  {options.length} Options Available
+                </span>
               </div>
 
               <div className="grid grid-cols-1 gap-2.5">
@@ -167,8 +172,8 @@ export default function ProductDetails() {
                     key={opt.id || index}
                     className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
                       selectedOptionIndex === index
-                        ? "bg-blue-600/15 border-blue-500 text-white shadow-lg shadow-blue-500/10 ring-1 ring-blue-500/50"
-                        : "bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700"
+                        ? "bg-blue-600/20 border-blue-500 text-white shadow-lg shadow-blue-500/20 ring-1 ring-blue-500/60"
+                        : "bg-slate-950/80 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900/50"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -183,7 +188,7 @@ export default function ProductDetails() {
                         <span className="text-sm font-bold block text-white">
                           {opt.name}
                         </span>
-                        <span className="text-[11px] text-slate-400">
+                        <span className="text-[11px] text-slate-300">
                           {opt.type}
                         </span>
                       </div>
@@ -195,44 +200,20 @@ export default function ProductDetails() {
                 ))}
               </div>
             </div>
-
-            {/* কোয়ান্টিটি */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-800">
-              <span className="text-xs text-slate-400 font-bold uppercase">
-                Quantity
-              </span>
-              <div className="flex items-center border border-slate-800 rounded-lg bg-slate-950 overflow-hidden">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3.5 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-bold"
-                >
-                  -
-                </button>
-                <span className="px-5 py-1.5 text-sm font-bold font-mono text-white">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-3.5 py-1.5 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors font-bold"
-                >
-                  +
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* ডান পাশ: অর্ডার সামারি */}
+        {/* Dan pas: Order Summary (Desktop Sticky) */}
         <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-6">
-          <div className="bg-slate-900/95 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-6">
+          <div className="bg-slate-900/95 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-6 backdrop-blur-xl">
             <h3 className="text-lg font-black text-white border-b border-slate-800 pb-3 flex items-center justify-between">
               <span>Order Summary</span>
-              <span className="text-xs font-semibold text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20">
-                {quantity} {quantity > 1 ? "Items" : "Item"}
+              <span className="text-xs font-bold text-emerald-300 bg-emerald-500/20 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                Instant Delivery
               </span>
             </h3>
 
-            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800/80 space-y-2">
+            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 shadow-inner">
               <div className="flex justify-between items-start text-sm">
                 <span className="font-semibold text-white line-clamp-1">
                   {currentOption.name}
@@ -241,13 +222,13 @@ export default function ProductDetails() {
                   ৳{totalPrice}
                 </span>
               </div>
-              <div className="text-xs text-slate-400 flex items-center gap-1">
+              <div className="text-xs text-slate-300 flex items-center gap-1">
                 <Zap className="w-3.5 h-3.5 text-emerald-400" />
                 <span>{currentOption.type}</span>
               </div>
             </div>
 
-            <div className="space-y-3 text-sm text-slate-300">
+            <div className="space-y-3 text-sm text-slate-200">
               <div className="flex justify-between">
                 <span className="text-slate-400">Subtotal:</span>
                 <span className="font-mono font-bold text-white">
@@ -256,7 +237,7 @@ export default function ProductDetails() {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-400">Delivery Charge:</span>
-                <span className="text-emerald-400 font-medium text-xs bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                <span className="text-emerald-400 font-bold text-xs bg-emerald-500/15 px-2 py-0.5 rounded border border-emerald-500/30">
                   Free (Instant)
                 </span>
               </div>
@@ -270,30 +251,30 @@ export default function ProductDetails() {
               </div>
             </div>
 
-            <div className="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/60 text-center space-y-2">
+            <div className="bg-slate-950/90 p-3.5 rounded-xl border border-slate-800 text-center space-y-2">
               <div className="text-[11px] text-slate-400 flex items-center justify-center gap-1">
                 <Lock className="w-3 h-3 text-emerald-400" />
                 <span>Secured Payment via:</span>
               </div>
               <div className="flex items-center justify-center gap-2 font-bold text-xs">
-                <span className="px-2.5 py-1 bg-pink-600/20 text-pink-400 border border-pink-500/30 rounded">
+                <span className="px-2.5 py-1 bg-pink-600/20 text-pink-300 border border-pink-500/40 rounded shadow-sm">
                   bKash
                 </span>
-                <span className="px-2.5 py-1 bg-orange-600/20 text-orange-400 border border-orange-500/30 rounded">
+                <span className="px-2.5 py-1 bg-orange-600/20 text-orange-300 border border-orange-500/40 rounded shadow-sm">
                   Nagad
                 </span>
-                <span className="px-2.5 py-1 bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded">
+                <span className="px-2.5 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/40 rounded shadow-sm">
                   Rocket
                 </span>
               </div>
             </div>
 
-            {/* অ্যাকশন বাটনসমূহ */}
+            {/* Action buttons */}
             <div className="space-y-3 pt-2">
               <button
                 type="button"
                 onClick={handleOpenCheckout}
-                className="w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/25 active:scale-[0.98] cursor-pointer text-sm"
+                className="w-full py-3.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-600/30 active:scale-[0.98] cursor-pointer text-sm"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>Proceed to Checkout (bKash/Nagad)</span>
@@ -302,7 +283,7 @@ export default function ProductDetails() {
               <button
                 type="button"
                 onClick={handleWhatsAppChat}
-                className="w-full py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/25 active:scale-[0.98] cursor-pointer text-sm"
+                className="w-full py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 active:scale-[0.98] cursor-pointer text-sm"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Chat on WhatsApp for Help</span>
@@ -312,7 +293,7 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      {/* চেকআউট মোডাল কম্পোনেন্ট কল */}
+      {/* Checkout Modal */}
       <CheckoutModal
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}

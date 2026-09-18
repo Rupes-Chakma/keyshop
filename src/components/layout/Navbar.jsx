@@ -83,7 +83,6 @@ export default function Navbar() {
     }
   };
 
-  // মাউস ডাউন বা ক্লিকের সাথে সাথে ইনস্ট্যান্ট ও স্মুথভাবে নেভিগেট করার জন্য
   const handleSelectProduct = (productName) => {
     startTransition(() => {
       navigate(`/?search=${encodeURIComponent(productName)}`);
@@ -97,7 +96,7 @@ export default function Navbar() {
     <nav className="bg-slate-900 text-white sticky top-0 z-50 shadow-md border-b border-slate-800">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 flex justify-between items-center">
         {/* Left Side: Mobile Menu Toggle Button & Logo */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 rounded-xl bg-slate-800 border border-slate-700 text-cyan-400 hover:border-cyan-500/50 transition focus:outline-none"
@@ -109,7 +108,7 @@ export default function Navbar() {
           <Link
             to="/"
             onClick={handleLogoClick}
-            className="group flex items-center gap-2 text-lg sm:text-xl font-black tracking-tight transition"
+            className="group flex items-center gap-2 text-lg sm:text-xl font-black tracking-tight transition pl-0.5 sm:pl-0"
           >
             <div className="relative w-9 h-8 sm:w-10 sm:h-9 rounded-xl bg-slate-900 border-2 border-cyan-500/60 flex flex-col items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:border-cyan-400 group-hover:shadow-cyan-400/40 group-hover:scale-105 transition-all duration-300 ease-out shrink-0">
               <div className="flex items-center justify-center w-full h-full pt-0.5">
@@ -157,9 +156,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Right Side: Language Toggle & Cart Icon */}
+        {/* Right Side: Language Toggle & Cart Icon (Hidden on Mobile) */}
         <div className="flex items-center gap-2 sm:gap-4">
-          <div className="flex items-center gap-1 bg-slate-800 border border-slate-700 rounded-xl px-2 sm:px-2.5 py-1 text-xs hover:border-cyan-500/50 transition-colors">
+          <div className="hidden md:flex items-center gap-1 bg-slate-800 border border-slate-700 rounded-xl px-2 sm:px-2.5 py-1 text-xs hover:border-cyan-500/50 transition-colors">
             <Globe className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
             <select
               value={language}
@@ -191,7 +190,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* ================= মোবাইল মেনু এবং আপনার প্রোডাক্টের লাইভ সার্চ ড্রপডাউন ================= */}
+      {/* ================= মোবাইল মেনু এবং ড্রপডাউন ================= */}
       {isOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex">
           <div
@@ -246,6 +245,26 @@ export default function Navbar() {
                 </button>
               </div>
 
+              {/* Mobile Language Selector Dropdown */}
+              <div className="flex items-center justify-between bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs">
+                <div className="flex items-center gap-2 text-slate-300 font-medium">
+                  <Globe className="w-4 h-4 text-cyan-400" />
+                  <span>Language</span>
+                </div>
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="bg-slate-900 text-white font-medium border border-slate-700 rounded-lg px-2 py-1 focus:outline-none cursor-pointer text-xs"
+                >
+                  <option value="English" className="bg-slate-900 text-white">
+                    English (EN)
+                  </option>
+                  <option value="Bengali" className="bg-slate-900 text-white">
+                    বাংলা (BN)
+                  </option>
+                </select>
+              </div>
+
               {/* সার্চ ইনপুট এবং আপনার উইন্ডোজ প্রোডাক্টের ড্রপডাউন */}
               <div className="relative" ref={searchRef}>
                 <form onSubmit={handleSearchSubmit} className="relative">
@@ -278,10 +297,8 @@ export default function Navbar() {
                   )}
                 </form>
 
-                {/* আপনার আসল প্রোডাক্টগুলোর লিস্ট এখানে দেখাবে */}
                 {isSearchFocused && (
                   <div className="mt-3 bg-slate-950 border border-slate-800 rounded-2xl p-3 shadow-2xl space-y-3 animate-in fade-in duration-150">
-                    {/* Popular Searches */}
                     <div>
                       <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 mb-2 uppercase tracking-wider">
                         <TrendingUp className="w-3 h-3 text-cyan-400" />
@@ -304,7 +321,6 @@ export default function Navbar() {
                       </div>
                     </div>
 
-                    {/* Windows Products List */}
                     <div>
                       <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 mb-2 uppercase tracking-wider">
                         <Sparkles className="w-3 h-3 text-amber-400" />

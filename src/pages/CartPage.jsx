@@ -39,7 +39,7 @@ export default function CartPage() {
       .map(
         (item, index) =>
           `🔹 *Product [${index + 1}]:* ${item.name}%0A` +
-          `    ▫️ *Edition/Key Type:* ${item.versionName || "Standard Windows Key"}%0A` +
+          `    ▫️ *Edition/Key Type:* ${item.selectedEdition || item.versionName || "Standard Windows Key"}%0A` +
           `    ▫️ *Price:* BDT ${item.price}`,
       )
       .join("%0A%0A");
@@ -133,7 +133,7 @@ export default function CartPage() {
         <p className="text-slate-400 mb-8 text-sm max-w-sm leading-relaxed">
           {language === "English"
             ? "No Windows products have been added to the cart yet. Explore our store!"
-            : "আপনার কার্টে কোনো উইন্ডোজ প্রোডাক্ট যুক্ত করা হয়নি। আমাদের কালেকশন থেকে পছন্দমতো কি বেছে নিন।"}
+            : "আপনার কার্টে কোনো উইন্ডোজ প্রোডাক্ট যুক্ত করা হয়নি। আমাদের কালেকশন থেকে পছন্দমতো কি বেছে নিন।"}
         </p>
         <Link
           to="/"
@@ -185,9 +185,9 @@ export default function CartPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
         {/* প্রোডাক্ট কার্ড লিস্ট */}
         <div className="lg:col-span-2 space-y-4">
-          {cart.map((item) => (
+          {cart.map((item, index) => (
             <div
-              key={item.id}
+              key={`${item.id}-${item.selectedEdition || index}`}
               className="group relative bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 hover:border-blue-500/40 rounded-3xl p-5 transition-all duration-300 shadow-xl overflow-hidden"
             >
               <div className="absolute -right-12 -top-12 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all"></div>
@@ -210,7 +210,9 @@ export default function CartPage() {
                     </h3>
                     <div className="flex flex-wrap items-center gap-2 pt-1">
                       <span className="text-[11px] font-semibold text-blue-300 bg-blue-500/15 px-3 py-0.5 rounded-full border border-blue-500/20">
-                        {item.versionName || "Digital License Key"}
+                        {item.selectedEdition ||
+                          item.versionName ||
+                          "Digital License Key"}
                       </span>
                       <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20 flex items-center gap-1.5 font-medium">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -226,17 +228,21 @@ export default function CartPage() {
                       Price
                     </span>
                     <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-200 text-lg sm:text-xl font-mono">
-                      ৳{item.price}
+                      ৳{Number(item.price || 0) * Number(item.quantity || 1)}
                     </span>
                   </div>
                   <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-400 bg-slate-800/80 hover:bg-red-500/10 border border-slate-700/80 hover:border-red-500/30 rounded-2xl transition cursor-pointer active:scale-95 shadow-sm"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFromCart(item.id, item.selectedEdition);
+                    }}
+                    className="relative z-20 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-400 bg-slate-800/80 hover:bg-red-500/10 border border-slate-700/80 hover:border-red-500/30 rounded-2xl transition cursor-pointer active:scale-95 shadow-sm"
                     title={
                       language === "English" ? "Remove item" : "রিমুভ করুন"
                     }
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-4 h-4 pointer-events-none" />
                   </button>
                 </div>
               </div>
@@ -257,7 +263,7 @@ export default function CartPage() {
               <p className="text-slate-400 text-xs">
                 {language === "English"
                   ? "Full support available during software installation & activation."
-                  : "ইনস্টল ও অ্যাক্টিভেশন সংক্রান্ত যেকোনো সমস্যায় আমাদের ডেডিকেটেড সাপোর্ট টিম সবসময় সাথে আছে।"}
+                  : "ইনস্টল ও অ্যাক্টিভেশন সংক্রান্ত যেকোনো সমস্যায় আমাদের ডেডিকেটেড সাপোর্ট টিম সবসময় সাথে আছে।"}
               </p>
             </div>
           </div>

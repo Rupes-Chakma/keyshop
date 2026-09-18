@@ -7,6 +7,7 @@ import {
   AlertCircle,
   ShieldCheck,
   Loader2,
+  MessageSquare,
 } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
 
@@ -43,29 +44,27 @@ export default function CheckoutModal({
 
   if (!isOpen) return null;
 
-  // Contact Info Validation
+  // Contact Info Validation (Flexible for Email or Phone)
   const handleContactChange = (e) => {
-    let value = e.target.value;
-    const fullBdPhoneRegex = /^01[3-9]\d{8}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (/^\d/.test(value)) {
-      value = value.replace(/\D/g, "");
-      if (value.length > 11) return;
-    }
-
+    const value = e.target.value;
     setContactInfo(value);
 
-    if (value.length === 0) {
+    if (!value.trim()) {
       setContactError("");
-    } else if (/^\d/.test(value)) {
-      if (!fullBdPhoneRegex.test(value)) {
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^01[3-9]\d{8}$/;
+
+    if (/^\d/.test(value)) {
+      if (value.length === 11 && !phoneRegex.test(value)) {
         setContactError("Please enter a valid 11-digit mobile number");
       } else {
         setContactError("");
       }
     } else {
-      if (!emailRegex.test(value)) {
+      if (value.includes("@") && !emailRegex.test(value)) {
         setContactError("Please enter a valid email address");
       } else {
         setContactError("");
@@ -79,8 +78,10 @@ export default function CheckoutModal({
     if (value.length <= 11) {
       setSenderNumber(value);
       const bdPhoneRegex = /^01[3-9]\d{8}$/;
-      if (value.length > 0 && !bdPhoneRegex.test(value)) {
-        setSenderError("Please enter a valid 11-digit BD sender number");
+      if (value.length > 0 && value.length < 11) {
+        setSenderError("Sender number must be 11 digits");
+      } else if (value.length === 11 && !bdPhoneRegex.test(value)) {
+        setSenderError("Please enter a valid BD operator number (013-019)");
       } else {
         setSenderError("");
       }
@@ -109,29 +110,35 @@ export default function CheckoutModal({
     setContactError("");
     setSenderError("");
 
-    const bdPhoneRegex = /^01[3-9]\d{8}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     let hasError = false;
 
-    if (/^\d/.test(contactInfo)) {
-      if (!bdPhoneRegex.test(contactInfo)) {
-        setContactError("Please enter a valid 11-digit mobile number");
-        hasError = true;
-      }
-    } else {
-      if (!emailRegex.test(contactInfo)) {
-        setContactError("Please enter a valid email address");
-        hasError = true;
-      }
+    if (!contactInfo.trim()) {
+      setContactError("This field is required");
+      hasError = true;
     }
 
+    const bdPhoneRegex = /^01[3-9]\d{8}$/;
     if (!bdPhoneRegex.test(senderNumber)) {
       setSenderError("Please enter a valid 11-digit BD sender number");
       hasError = true;
     }
 
     if (hasError) return;
+
+    setIsSubmitting(true);
+
+    // WhatsApp Integration Logic
+    const adminWhatsAppNumber = "8801648582639"; // Apnar WhatsApp number
+    const message =
+      `*🛒 New Payment / Order Submission*\n\n` +
+      `*Payment Method:* ${paymentMethod}\n` +
+      `*Total Amount:* ৳${totalAmount}\n` +
+      `*Sender Number:* ${senderNumber}\n` +
+      `*TrxID:* ${trxId || "N/A"}\n` +
+      `*Contact / WhatsApp:* ${contactInfo}`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${adminWhatsAppNumber}?text=${encodedMessage}`;
 
     const paymentData = {
       method: paymentMethod,
@@ -141,10 +148,11 @@ export default function CheckoutModal({
       amount: totalAmount,
     };
 
-    setIsSubmitting(true);
-
     try {
       setTimeout(() => {
+        // Direct WhatsApp-e redirect korbe
+        window.open(whatsappUrl, "_blank");
+
         if (onConfirm && typeof onConfirm === "function") {
           onConfirm(paymentData);
         }
@@ -152,6 +160,7 @@ export default function CheckoutModal({
         setContactInfo("");
         setSenderNumber("");
         setTrxId("");
+        onClose();
       }, 800);
     } catch (error) {
       console.error("Checkout submission error:", error);
@@ -160,22 +169,22 @@ export default function CheckoutModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-md bg-[#0f172a] border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl text-slate-100 max-h-[92vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-md bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800/80 rounded-2xl p-4 sm:p-6 shadow-2xl text-slate-100 max-h-[92vh] overflow-y-auto">
         {/* Top Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
-              <ShieldCheck className="w-4 h-4" />
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-inner">
+              <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white tracking-tight">
+              <h3 className="text-base font-extrabold text-white tracking-tight">
                 {t ? t("secureCheckout") : "Secure Checkout"}
               </h3>
               <p className="text-xs text-slate-400">
                 {t
                   ? t("completePaymentSecurely")
-                  : "Complete your payment securely"}
+                  : "Pay securely via bKash, Nagad or Rocket"}
               </p>
             </div>
           </div>
@@ -189,18 +198,18 @@ export default function CheckoutModal({
         </div>
 
         {/* Minimal Price Banner */}
-        <div className="flex items-center justify-between bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800/80 rounded-xl p-3.5 mb-4 shadow-inner">
+        <div className="flex items-center justify-between bg-slate-950/60 border border-slate-800/90 rounded-xl p-3.5 mb-4 shadow-inner">
           <div>
-            <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
               {t ? t("totalPayableAmount") : "Total Payable Amount"}
             </span>
-            <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 mt-0.5">
+            <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 mt-0.5 font-mono">
               ৳{totalAmount}
             </div>
           </div>
           <div className="text-right">
-            <span className="inline-block px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-[11px] font-semibold">
-              {t ? t("encryptedAndSecure") : "Encrypted & Secure"}
+            <span className="inline-block px-2.5 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-[11px] font-semibold">
+              Instant WhatsApp Checkout
             </span>
           </div>
         </div>
@@ -208,7 +217,7 @@ export default function CheckoutModal({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* 1. Payment Method Selection */}
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
               1. {t ? t("selectPaymentMethod") : "Select Payment Method"}
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -225,10 +234,10 @@ export default function CheckoutModal({
                     className={`py-2.5 px-2 rounded-xl font-bold text-xs tracking-wide border transition-all flex items-center justify-center cursor-pointer ${
                       isActive
                         ? method === "bKash"
-                          ? "bg-pink-600 text-white border-pink-500 shadow-md shadow-pink-600/30 ring-1 ring-pink-400"
+                          ? "bg-pink-600 text-white border-pink-500 shadow-lg shadow-pink-600/30 ring-1 ring-pink-400"
                           : method === "Nagad"
-                            ? "bg-orange-600 text-white border-orange-500 shadow-md shadow-orange-600/30 ring-1 ring-orange-400"
-                            : "bg-purple-600 text-white border-purple-500 shadow-md shadow-purple-600/30 ring-1 ring-purple-400"
+                            ? "bg-orange-600 text-white border-orange-500 shadow-lg shadow-orange-600/30 ring-1 ring-orange-400"
+                            : "bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-600/30 ring-1 ring-purple-400"
                         : "bg-slate-900/60 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
                     }`}
                   >
@@ -240,15 +249,15 @@ export default function CheckoutModal({
           </div>
 
           {/* 2. Account Number Box */}
-          <div className="bg-slate-950/50 border border-slate-800 rounded-xl p-3.5">
+          <div className="bg-slate-950/40 border border-slate-800/80 rounded-xl p-3.5">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                 2. Send Money to this number
               </span>
               <button
                 type="button"
                 onClick={() => setShowQR(!showQR)}
-                className="text-xs flex items-center gap-1 text-blue-400 hover:text-blue-300 font-medium transition cursor-pointer"
+                className="text-xs flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-semibold transition cursor-pointer"
               >
                 <QrCode className="w-3.5 h-3.5" />
                 {showQR ? "View Number" : "QR Code"}
@@ -290,7 +299,7 @@ export default function CheckoutModal({
 
           {/* 3. Form Inputs */}
           <div className="space-y-3">
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
               3. Provide Payment Information
             </label>
 
@@ -301,12 +310,11 @@ export default function CheckoutModal({
                 required
                 value={contactInfo}
                 onChange={handleContactChange}
-                maxLength={contactInfo.startsWith("0") ? 11 : undefined}
                 placeholder="Email Address or WhatsApp Number for Key Delivery"
                 className={`w-full bg-slate-950/60 border rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none transition ${
                   contactError
                     ? "border-red-500/80 focus:border-red-500"
-                    : "border-slate-800 focus:border-blue-500"
+                    : "border-slate-800 focus:border-emerald-500"
                 }`}
               />
               {contactError && (
@@ -329,7 +337,7 @@ export default function CheckoutModal({
                   className={`w-full bg-slate-950/60 border rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none transition font-mono ${
                     senderError
                       ? "border-red-500/80 focus:border-red-500"
-                      : "border-slate-800 focus:border-blue-500"
+                      : "border-slate-800 focus:border-emerald-500"
                   }`}
                 />
               </div>
@@ -339,7 +347,7 @@ export default function CheckoutModal({
                   value={trxId}
                   onChange={handleTrxChange}
                   placeholder="TrxID (Optional)"
-                  className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition font-mono uppercase"
+                  className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition font-mono uppercase"
                 />
               </div>
             </div>
@@ -352,21 +360,21 @@ export default function CheckoutModal({
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button with WhatsApp Theme */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm tracking-wide rounded-xl shadow-lg shadow-blue-600/25 transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm tracking-wide rounded-xl shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin text-white" />
-                <span>Processing Payment...</span>
+                <span>Redirecting to WhatsApp...</span>
               </>
             ) : (
               <>
-                <CheckCircle className="w-4 h-4" />
-                <span>Confirm Payment</span>
+                <MessageSquare className="w-4 h-4" />
+                <span>Confirm & Proceed on WhatsApp</span>
               </>
             )}
           </button>
