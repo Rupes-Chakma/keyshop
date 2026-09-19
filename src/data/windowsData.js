@@ -3,10 +3,12 @@ export const windowsData = [
     id: "win11",
     versionName: "Windows 11",
     image: "/images/win11-banner.jpg",
+
     editions: [
       {
         id: "win11-pro-retail",
-        name: "Windows 11 Professional Retail",
+        name: "Windows 11 Professional",
+        image: "/images/win11-pro.jpg",
         type: "Lifetime License Key - Bind",
         price: 1490,
         descKey: "win11ProDesc",
@@ -17,9 +19,11 @@ export const windowsData = [
           "win11ProFeature4",
         ],
       },
+
       {
         id: "win11-home-retail",
-        name: "Windows 11 Home Retail",
+        name: "Windows 11 Home",
+        image: "/images/win11-home.jpg",
         type: "Lifetime License Key - Bind",
         price: 1190,
         descKey: "win11HomeDesc",
@@ -30,9 +34,11 @@ export const windowsData = [
           "win11HomeFeature4",
         ],
       },
+
       {
-        id: "win11-enterprise",
-        name: "Windows 11 Enterprise",
+        id: "win11-retail",
+        name: "Windows 11 Retail",
+        image: "/images/win11-retail.jpg",
         type: "Lifetime License Key - Bind",
         price: 1990,
         descKey: "win11EntDesc",
@@ -44,10 +50,12 @@ export const windowsData = [
       },
     ],
   },
+
   {
     id: "win10",
     versionName: "Windows 10",
     image: "/images/win10-banner.jpg",
+
     editions: [
       {
         id: "win10-pro-retail",
@@ -62,6 +70,7 @@ export const windowsData = [
           "win10ProFeature4",
         ],
       },
+
       {
         id: "win10-pro-oem",
         name: "Windows 10 Professional OEM",
@@ -74,6 +83,7 @@ export const windowsData = [
           "win10ProFeature3",
         ],
       },
+
       {
         id: "win10-home-retail",
         name: "Windows 10 Home Retail",
@@ -86,6 +96,7 @@ export const windowsData = [
           "win10HomeFeature3",
         ],
       },
+
       {
         id: "win10-home-oem",
         name: "Windows 10 Home OEM",
@@ -94,6 +105,7 @@ export const windowsData = [
         descKey: "win10HomeOemDesc",
         featureKeys: ["win10HomeFeature1", "win10HomeFeature2"],
       },
+
       {
         id: "win10-enterprise",
         name: "Windows 10 Enterprise",
@@ -108,10 +120,12 @@ export const windowsData = [
       },
     ],
   },
+
   {
     id: "win8-1",
     versionName: "Windows 8.1",
     image: "/images/win365-banner.jpg",
+
     editions: [
       {
         id: "win8-1-pro-oem",
@@ -127,10 +141,12 @@ export const windowsData = [
       },
     ],
   },
+
   {
     id: "win7",
     versionName: "Windows 7",
     image: "/images/win365-banner.jpg",
+
     editions: [
       {
         id: "win7-all",
@@ -142,10 +158,12 @@ export const windowsData = [
       },
     ],
   },
+
   {
     id: "win-server",
     versionName: "Windows Server",
     image: "/images/win365-banner.jpg",
+
     editions: [
       {
         id: "win-server-2022",
@@ -159,6 +177,7 @@ export const windowsData = [
           "server2022Feature3",
         ],
       },
+
       {
         id: "win-server-2019",
         name: "Windows Server 2019 Standard",
@@ -173,10 +192,12 @@ export const windowsData = [
       },
     ],
   },
+
   {
     id: "ms-office",
     versionName: "MS Office",
     image: "/images/win11-banner.jpg",
+
     editions: [
       {
         id: "office-2021",
@@ -190,6 +211,7 @@ export const windowsData = [
           "office2021Feature3",
         ],
       },
+
       {
         id: "office-2019",
         name: "Microsoft Office 2019 Pro Plus",
@@ -202,6 +224,7 @@ export const windowsData = [
           "office2019Feature3",
         ],
       },
+
       {
         id: "office-365",
         name: "Microsoft Office 365 (5 Devices)",
