@@ -6,7 +6,7 @@ export const windowsData = [
 
     editions: [
       {
-        id: "win11-pro-retail",
+        id: "win11-pro",
         name: "Windows 11 Professional",
         image: "/images/win11-pro.jpg",
         type: "Lifetime License Key - Bind",
@@ -21,7 +21,7 @@ export const windowsData = [
       },
 
       {
-        id: "win11-home-retail",
+        id: "win11-home",
         name: "Windows 11 Home",
         image: "/images/win11-home.jpg",
         type: "Lifetime License Key - Bind",
@@ -41,11 +41,25 @@ export const windowsData = [
         image: "/images/win11-retail.jpg",
         type: "Lifetime License Key - Bind",
         price: 1990,
-        descKey: "win11EntDesc",
+        descKey: "win11RetailDesc",
         featureKeys: [
-          "win11EntFeature1",
-          "win11EntFeature2",
-          "win11EntFeature3",
+          "win11RetailFeature1",
+          "win11RetailFeature2",
+          "win11RetailFeature3",
+        ],
+      },
+
+      {
+        id: "win11-education",
+        name: "Windows 11 Education",
+        image: "/images/win11-education.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 1290,
+        descKey: "win11EducationDesc",
+        featureKeys: [
+          "win11EducationFeature1",
+          "win11EducationFeature2",
+          "win11EducationFeature3",
         ],
       },
     ],
@@ -58,11 +72,26 @@ export const windowsData = [
 
     editions: [
       {
-        id: "win10-pro-retail",
-        name: "Windows 10 Professional Retail",
+        id: "win10-home",
+        name: "Windows 10 Home",
+        image: "/images/win10-home.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 950,
+        descKey: "win10HomeDesc",
+        featureKeys: [
+          "win10HomeFeature1",
+          "win10HomeFeature2",
+          "win10HomeFeature3",
+        ],
+      },
+
+      {
+        id: "win10-pro",
+        name: "Windows 10 Professional",
+        image: "/images/win10-pro.jpg",
         type: "Lifetime License Key - Bind",
         price: 1290,
-        descKey: "win10ProRetailDesc",
+        descKey: "win10ProDesc",
         featureKeys: [
           "win10ProFeature1",
           "win10ProFeature2",
@@ -72,43 +101,23 @@ export const windowsData = [
       },
 
       {
-        id: "win10-pro-oem",
-        name: "Windows 10 Professional OEM",
+        id: "win10-education",
+        name: "Windows 10 Education",
+        image: "/images/win10-education.jpg",
         type: "Lifetime License Key - Bind",
-        price: 990,
-        descKey: "win10ProOemDesc",
+        price: 1290,
+        descKey: "win10EducationDesc",
         featureKeys: [
-          "win10ProFeature1",
-          "win10ProFeature2",
-          "win10ProFeature3",
+          "win10EducationFeature1",
+          "win10EducationFeature2",
+          "win10EducationFeature3",
         ],
-      },
-
-      {
-        id: "win10-home-retail",
-        name: "Windows 10 Home Retail",
-        type: "Lifetime License Key - Bind",
-        price: 950,
-        descKey: "win10HomeRetailDesc",
-        featureKeys: [
-          "win10HomeFeature1",
-          "win10HomeFeature2",
-          "win10HomeFeature3",
-        ],
-      },
-
-      {
-        id: "win10-home-oem",
-        name: "Windows 10 Home OEM",
-        type: "Lifetime License Key - Bind",
-        price: 790,
-        descKey: "win10HomeOemDesc",
-        featureKeys: ["win10HomeFeature1", "win10HomeFeature2"],
       },
 
       {
         id: "win10-enterprise",
         name: "Windows 10 Enterprise",
+        image: "/images/win10-enterprise.jpg",
         type: "Lifetime License Key - Bind",
         price: 1790,
         descKey: "win10EntDesc",
@@ -128,15 +137,59 @@ export const windowsData = [
 
     editions: [
       {
-        id: "win8-1-pro-oem",
-        name: "Windows 8.1 Professional OEM",
+        id: "win8-1-home",
+        name: "Windows 8.1",
+        image: "/images/win8-1-home.jpg",
         type: "Lifetime License Key - Bind",
-        price: 690,
+        price: 590,
+        descKey: "win81HomeDesc",
+        featureKeys: [
+          "win81HomeFeature1",
+          "win81HomeFeature2",
+          "win81HomeFeature3",
+        ],
+      },
+
+      {
+        id: "win8-1-pro",
+        name: "Windows 8.1 Professional",
+        image: "/images/win8-1-pro.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 790,
         descKey: "win81ProDesc",
         featureKeys: [
           "win81ProFeature1",
           "win81ProFeature2",
           "win81ProFeature3",
+          "win81ProFeature4",
+        ],
+      },
+
+      {
+        id: "win8-1-enterprise",
+        name: "Windows 8.1 Enterprise",
+        image: "/images/win8-1-enterprise.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 990,
+        descKey: "win81EnterpriseDesc",
+        featureKeys: [
+          "win81EnterpriseFeature1",
+          "win81EnterpriseFeature2",
+          "win81EnterpriseFeature3",
+        ],
+      },
+
+      {
+        id: "win8-1-pro-oem",
+        name: "Windows 8.1 Professional OEM",
+        image: "/images/win8-1-pro-oem.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 690,
+        descKey: "win81ProOemDesc",
+        featureKeys: [
+          "win81ProOemFeature1",
+          "win81ProOemFeature2",
+          "win81ProOemFeature3",
         ],
       },
     ],
@@ -149,12 +202,60 @@ export const windowsData = [
 
     editions: [
       {
-        id: "win7-all",
-        name: "Windows 7 Pro, Home, Ultimate",
+        id: "win7-home-premium",
+        name: "Windows 7 Home Premium",
+        image: "/images/win7-home-premium.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 590,
+        descKey: "win7HomePremiumDesc",
+        featureKeys: [
+          "win7HomePremiumFeature1",
+          "win7HomePremiumFeature2",
+          "win7HomePremiumFeature3",
+        ],
+      },
+
+      {
+        id: "win7-professional",
+        name: "Windows 7 Professional",
+        image: "/images/win7-professional.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 690,
+        descKey: "win7ProDesc",
+        featureKeys: [
+          "win7ProFeature1",
+          "win7ProFeature2",
+          "win7ProFeature3",
+          "win7ProFeature4",
+        ],
+      },
+
+      {
+        id: "win7-ultimate",
+        name: "Windows 7 Ultimate",
+        image: "/images/win7-ultimate.jpg",
         type: "Lifetime License Key - Bind",
         price: 790,
-        descKey: "win7AllDesc",
-        featureKeys: ["win7ProFeature1", "win7ProFeature2", "win7ProFeature3"],
+        descKey: "win7UltimateDesc",
+        featureKeys: [
+          "win7UltimateFeature1",
+          "win7UltimateFeature2",
+          "win7UltimateFeature3",
+        ],
+      },
+
+      {
+        id: "win7-enterprise",
+        name: "Windows 7 Enterprise",
+        image: "/images/win7-enterprise.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 990,
+        descKey: "win7EnterpriseDesc",
+        featureKeys: [
+          "win7EnterpriseFeature1",
+          "win7EnterpriseFeature2",
+          "win7EnterpriseFeature3",
+        ],
       },
     ],
   },
@@ -162,32 +263,61 @@ export const windowsData = [
   {
     id: "win-server",
     versionName: "Windows Server",
-    image: "/images/win365-banner.jpg",
 
     editions: [
       {
-        id: "win-server-2022",
+        id: "win-server-2022-standard",
         name: "Windows Server 2022 Standard",
+        image: "/images/win-server-2022-standard.jpg",
         type: "Lifetime License Key - Bind",
         price: 2990,
-        descKey: "server2022Desc",
+        descKey: "server2022StandardDesc",
         featureKeys: [
-          "server2022Feature1",
-          "server2022Feature2",
-          "server2022Feature3",
+          "server2022StandardFeature1",
+          "server2022StandardFeature2",
+          "server2022StandardFeature3",
         ],
       },
 
       {
-        id: "win-server-2019",
+        id: "win-server-2022-datacenter",
+        name: "Windows Server 2022 Datacenter",
+        image: "/images/win-server-2022-datacenter.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 4990,
+        descKey: "server2022DatacenterDesc",
+        featureKeys: [
+          "server2022DatacenterFeature1",
+          "server2022DatacenterFeature2",
+          "server2022DatacenterFeature3",
+        ],
+      },
+
+      {
+        id: "win-server-2019-standard",
         name: "Windows Server 2019 Standard",
+        image: "/images/win-server-2019-standard.jpg",
         type: "Lifetime License Key - Bind",
         price: 2490,
-        descKey: "server2019Desc",
+        descKey: "server2019StandardDesc",
         featureKeys: [
-          "server2019Feature1",
-          "server2019Feature2",
-          "server2019Feature3",
+          "server2019StandardFeature1",
+          "server2019StandardFeature2",
+          "server2019StandardFeature3",
+        ],
+      },
+
+      {
+        id: "win-server-2019-datacenter",
+        name: "Windows Server 2019 Datacenter",
+        image: "/images/win-server-2019-datacenter.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 3990,
+        descKey: "server2019DatacenterDesc",
+        featureKeys: [
+          "server2019DatacenterFeature1",
+          "server2019DatacenterFeature2",
+          "server2019DatacenterFeature3",
         ],
       },
     ],
@@ -196,12 +326,26 @@ export const windowsData = [
   {
     id: "ms-office",
     versionName: "MS Office",
-    image: "/images/win11-banner.jpg",
 
     editions: [
       {
+        id: "office-2024",
+        name: "Microsoft Office 2024 Pro Plus",
+        image: "/images/office-2024.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 1890,
+        descKey: "office2024Desc",
+        featureKeys: [
+          "office2024Feature1",
+          "office2024Feature2",
+          "office2024Feature3",
+        ],
+      },
+
+      {
         id: "office-2021",
         name: "Microsoft Office 2021 Pro Plus",
+        image: "/images/office-2021.jpg",
         type: "Lifetime License Key - Bind",
         price: 1590,
         descKey: "office2021Desc",
@@ -215,6 +359,7 @@ export const windowsData = [
       {
         id: "office-2019",
         name: "Microsoft Office 2019 Pro Plus",
+        image: "/images/office-2019.jpg",
         type: "Lifetime License Key - Bind",
         price: 1290,
         descKey: "office2019Desc",
@@ -227,8 +372,9 @@ export const windowsData = [
 
       {
         id: "office-365",
-        name: "Microsoft Office 365 (5 Devices)",
-        type: "Lifetime License Key - Bind",
+        name: "Microsoft 365",
+        image: "/images/microsoft-365.jpg",
+        type: "Subscription License",
         price: 890,
         descKey: "office365Desc",
         featureKeys: [
