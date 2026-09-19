@@ -1,8 +1,10 @@
 export const windowsData = [
+  // =========================================================
+  // WINDOWS 11
+  // =========================================================
   {
     id: "win11",
     versionName: "Windows 11",
-    image: "/images/win11-banner.jpg",
 
     editions: [
       {
@@ -65,26 +67,14 @@ export const windowsData = [
     ],
   },
 
+  // =========================================================
+  // WINDOWS 10
+  // =========================================================
   {
     id: "win10",
     versionName: "Windows 10",
-    image: "/images/win10-banner.jpg",
 
     editions: [
-      {
-        id: "win10-home",
-        name: "Windows 10 Home",
-        image: "/images/win10-home.jpg",
-        type: "Lifetime License Key - Bind",
-        price: 950,
-        descKey: "win10HomeDesc",
-        featureKeys: [
-          "win10HomeFeature1",
-          "win10HomeFeature2",
-          "win10HomeFeature3",
-        ],
-      },
-
       {
         id: "win10-pro",
         name: "Windows 10 Professional",
@@ -97,6 +87,20 @@ export const windowsData = [
           "win10ProFeature2",
           "win10ProFeature3",
           "win10ProFeature4",
+        ],
+      },
+
+      {
+        id: "win10-home",
+        name: "Windows 10 Home",
+        image: "/images/win10-home.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 950,
+        descKey: "win10HomeDesc",
+        featureKeys: [
+          "win10HomeFeature1",
+          "win10HomeFeature2",
+          "win10HomeFeature3",
         ],
       },
 
@@ -130,91 +134,80 @@ export const windowsData = [
     ],
   },
 
+  // =========================================================
+  // MS OFFICE
+  // =========================================================
   {
-    id: "win8-1",
-    versionName: "Windows 8.1",
-    image: "/images/win365-banner.jpg",
+    id: "ms-office",
+    versionName: "MS Office",
 
     editions: [
       {
-        id: "win8-1-home",
-        name: "Windows 8.1",
-        image: "/images/win8-1-home.jpg",
+        id: "office-2021",
+        name: "Microsoft Office 2021 Pro Plus",
+        image: "/images/office-2021.jpg",
         type: "Lifetime License Key - Bind",
-        price: 590,
-        descKey: "win81HomeDesc",
+        price: 1590,
+        descKey: "office2021Desc",
         featureKeys: [
-          "win81HomeFeature1",
-          "win81HomeFeature2",
-          "win81HomeFeature3",
+          "office2021Feature1",
+          "office2021Feature2",
+          "office2021Feature3",
         ],
       },
 
       {
-        id: "win8-1-pro",
-        name: "Windows 8.1 Professional",
-        image: "/images/win8-1-pro.jpg",
+        id: "office-2024",
+        name: "Microsoft Office 2024 Pro Plus",
+        image: "/images/office-2024.jpg",
         type: "Lifetime License Key - Bind",
-        price: 790,
-        descKey: "win81ProDesc",
+        price: 1890,
+        descKey: "office2024Desc",
         featureKeys: [
-          "win81ProFeature1",
-          "win81ProFeature2",
-          "win81ProFeature3",
-          "win81ProFeature4",
+          "office2024Feature1",
+          "office2024Feature2",
+          "office2024Feature3",
         ],
       },
 
       {
-        id: "win8-1-enterprise",
-        name: "Windows 8.1 Enterprise",
-        image: "/images/win8-1-enterprise.jpg",
+        id: "office-2019",
+        name: "Microsoft Office 2019 Pro Plus",
+        image: "/images/office-2019.jpg",
         type: "Lifetime License Key - Bind",
-        price: 990,
-        descKey: "win81EnterpriseDesc",
+        price: 1290,
+        descKey: "office2019Desc",
         featureKeys: [
-          "win81EnterpriseFeature1",
-          "win81EnterpriseFeature2",
-          "win81EnterpriseFeature3",
+          "office2019Feature1",
+          "office2019Feature2",
+          "office2019Feature3",
         ],
       },
 
       {
-        id: "win8-1-pro-oem",
-        name: "Windows 8.1 Professional OEM",
-        image: "/images/win8-1-pro-oem.jpg",
-        type: "Lifetime License Key - Bind",
-        price: 690,
-        descKey: "win81ProOemDesc",
+        id: "office-365",
+        name: "Microsoft 365",
+        image: "/images/microsoft-365.jpg",
+        type: "Subscription License",
+        price: 890,
+        descKey: "office365Desc",
         featureKeys: [
-          "win81ProOemFeature1",
-          "win81ProOemFeature2",
-          "win81ProOemFeature3",
+          "office365Feature1",
+          "office365Feature2",
+          "office365Feature3",
         ],
       },
     ],
   },
 
+  // =========================================================
+  // WINDOWS 7
+  // =========================================================
   {
     id: "win7",
     versionName: "Windows 7",
-    image: "/images/win365-banner.jpg",
 
     editions: [
-      {
-        id: "win7-home-premium",
-        name: "Windows 7 Home Premium",
-        image: "/images/win7-home-premium.jpg",
-        type: "Lifetime License Key - Bind",
-        price: 590,
-        descKey: "win7HomePremiumDesc",
-        featureKeys: [
-          "win7HomePremiumFeature1",
-          "win7HomePremiumFeature2",
-          "win7HomePremiumFeature3",
-        ],
-      },
-
       {
         id: "win7-professional",
         name: "Windows 7 Professional",
@@ -227,6 +220,20 @@ export const windowsData = [
           "win7ProFeature2",
           "win7ProFeature3",
           "win7ProFeature4",
+        ],
+      },
+
+      {
+        id: "win7-home-premium",
+        name: "Windows 7 Home Premium",
+        image: "/images/win7-home-premium.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 590,
+        descKey: "win7HomePremiumDesc",
+        featureKeys: [
+          "win7HomePremiumFeature1",
+          "win7HomePremiumFeature2",
+          "win7HomePremiumFeature3",
         ],
       },
 
@@ -260,6 +267,76 @@ export const windowsData = [
     ],
   },
 
+  // =========================================================
+  // WINDOWS 8.1
+  // =========================================================
+  {
+    id: "win8-1",
+    versionName: "Windows 8.1",
+
+    editions: [
+      {
+        id: "win8-1-pro",
+        name: "Windows 8.1 Professional",
+        image: "/images/win8-1-pro.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 790,
+        descKey: "win81ProDesc",
+        featureKeys: [
+          "win81ProFeature1",
+          "win81ProFeature2",
+          "win81ProFeature3",
+          "win81ProFeature4",
+        ],
+      },
+
+      {
+        id: "win8-1-home",
+        name: "Windows 8.1",
+        image: "/images/win8-1-home.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 590,
+        descKey: "win81HomeDesc",
+        featureKeys: [
+          "win81HomeFeature1",
+          "win81HomeFeature2",
+          "win81HomeFeature3",
+        ],
+      },
+
+      {
+        id: "win8-1-pro-oem",
+        name: "Windows 8.1 Professional OEM",
+        image: "/images/win8-1-pro-oem.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 690,
+        descKey: "win81ProOemDesc",
+        featureKeys: [
+          "win81ProOemFeature1",
+          "win81ProOemFeature2",
+          "win81ProOemFeature3",
+        ],
+      },
+
+      {
+        id: "win8-1-enterprise",
+        name: "Windows 8.1 Enterprise",
+        image: "/images/win8-1-enterprise.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 990,
+        descKey: "win81EnterpriseDesc",
+        featureKeys: [
+          "win81EnterpriseFeature1",
+          "win81EnterpriseFeature2",
+          "win81EnterpriseFeature3",
+        ],
+      },
+    ],
+  },
+
+  // =========================================================
+  // WINDOWS SERVER
+  // =========================================================
   {
     id: "win-server",
     versionName: "Windows Server",
@@ -280,20 +357,6 @@ export const windowsData = [
       },
 
       {
-        id: "win-server-2022-datacenter",
-        name: "Windows Server 2022 Datacenter",
-        image: "/images/win-server-2022-datacenter.jpg",
-        type: "Lifetime License Key - Bind",
-        price: 4990,
-        descKey: "server2022DatacenterDesc",
-        featureKeys: [
-          "server2022DatacenterFeature1",
-          "server2022DatacenterFeature2",
-          "server2022DatacenterFeature3",
-        ],
-      },
-
-      {
         id: "win-server-2019-standard",
         name: "Windows Server 2019 Standard",
         image: "/images/win-server-2019-standard.jpg",
@@ -308,6 +371,20 @@ export const windowsData = [
       },
 
       {
+        id: "win-server-2022-datacenter",
+        name: "Windows Server 2022 Datacenter",
+        image: "/images/win-server-2022-datacenter.jpg",
+        type: "Lifetime License Key - Bind",
+        price: 4990,
+        descKey: "server2022DatacenterDesc",
+        featureKeys: [
+          "server2022DatacenterFeature1",
+          "server2022DatacenterFeature2",
+          "server2022DatacenterFeature3",
+        ],
+      },
+
+      {
         id: "win-server-2019-datacenter",
         name: "Windows Server 2019 Datacenter",
         image: "/images/win-server-2019-datacenter.jpg",
@@ -318,69 +395,6 @@ export const windowsData = [
           "server2019DatacenterFeature1",
           "server2019DatacenterFeature2",
           "server2019DatacenterFeature3",
-        ],
-      },
-    ],
-  },
-
-  {
-    id: "ms-office",
-    versionName: "MS Office",
-
-    editions: [
-      {
-        id: "office-2024",
-        name: "Microsoft Office 2024 Pro Plus",
-        image: "/images/office-2024.jpg",
-        type: "Lifetime License Key - Bind",
-        price: 1890,
-        descKey: "office2024Desc",
-        featureKeys: [
-          "office2024Feature1",
-          "office2024Feature2",
-          "office2024Feature3",
-        ],
-      },
-
-      {
-        id: "office-2021",
-        name: "Microsoft Office 2021 Pro Plus",
-        image: "/images/office-2021.jpg",
-        type: "Lifetime License Key - Bind",
-        price: 1590,
-        descKey: "office2021Desc",
-        featureKeys: [
-          "office2021Feature1",
-          "office2021Feature2",
-          "office2021Feature3",
-        ],
-      },
-
-      {
-        id: "office-2019",
-        name: "Microsoft Office 2019 Pro Plus",
-        image: "/images/office-2019.jpg",
-        type: "Lifetime License Key - Bind",
-        price: 1290,
-        descKey: "office2019Desc",
-        featureKeys: [
-          "office2019Feature1",
-          "office2019Feature2",
-          "office2019Feature3",
-        ],
-      },
-
-      {
-        id: "office-365",
-        name: "Microsoft 365",
-        image: "/images/microsoft-365.jpg",
-        type: "Subscription License",
-        price: 890,
-        descKey: "office365Desc",
-        featureKeys: [
-          "office365Feature1",
-          "office365Feature2",
-          "office365Feature3",
         ],
       },
     ],
