@@ -7,7 +7,7 @@ import { windowsData } from "../data/windowsData";
 import { Shield, Zap, RefreshCw } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
-// সঠিক পাথ (src/Home/ ফোল্ডারের ফাইলগুলোর জন্য)
+// Correct paths for files inside the src/Home/ folder
 import PromoVideo from "../Home/PromoVideo";
 import ReviewSlider from "../Home/ReviewSlider";
 import FAQ from "../Home/FAQ";
@@ -18,12 +18,13 @@ export default function HomePage() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search")?.toLowerCase() || "";
 
-  // ভার্সন ফিল্টার এবং সার্চ কুয়েরি অনুযায়ী ফিল্টার করা
+  // Filter products based on selected version and search query
   const filteredData = windowsData
     .map((category) => {
       const filteredEditions = category.editions.filter((edition) => {
         const matchesVersion =
           selectedVersion === "all" || category.id === selectedVersion;
+
         const matchesSearch =
           !searchQuery ||
           edition.name?.toLowerCase().includes(searchQuery) ||
@@ -90,6 +91,7 @@ export default function HomePage() {
                   : "১০০% জেনুইন গ্যারান্টি"}
               </span>
             </div>
+
             <div className="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-800 shadow-lg">
               <Zap className="w-4 h-4 text-amber-400" />
               <span>
@@ -98,6 +100,7 @@ export default function HomePage() {
                   : "ইন্সট্যান্ট ইমেইল ও এসএমএস ডেলিভারি"}
               </span>
             </div>
+
             <div className="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-800 shadow-lg">
               <RefreshCw className="w-4 h-4 text-emerald-400" />
               <span>
@@ -118,6 +121,7 @@ export default function HomePage() {
               Search results for:{" "}
               <span className="text-cyan-400">"{searchQuery}"</span>
             </h2>
+
             <a
               href="/"
               className="text-xs text-cyan-400 underline hover:text-cyan-300"
@@ -129,7 +133,6 @@ export default function HomePage() {
       )}
 
       {/* 2. Promotional Video Section */}
-      <PromoVideo />
 
       {/* 3. Products List Section */}
       <section className="max-w-7xl mx-auto px-4 py-10" id="products">
@@ -139,6 +142,7 @@ export default function HomePage() {
               ? "Choose Windows Version"
               : "উইন্ডোজ ভার্সন বেছে নিন"}
           </h2>
+
           <p className="text-slate-400 text-xs sm:text-sm">
             {language === "English"
               ? "Select your preferred edition"
@@ -162,7 +166,7 @@ export default function HomePage() {
                   </h3>
                 </div>
 
-                {/* মোবাইল ডিভাইসে ২ কলাম (grid-cols-2) এবং বড় স্ক্রিনে ৩/৪ কলাম করার ফিক্স */}
+                {/* Use 2 columns on mobile and 3/4 columns on larger screens */}
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
                   {version.editions.map((edition) => {
                     const productObj = {
@@ -189,6 +193,8 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      <PromoVideo />
 
       {/* 4. Customer Review Screenshot Slider */}
       <ReviewSlider />

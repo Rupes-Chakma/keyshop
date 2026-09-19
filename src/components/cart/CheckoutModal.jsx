@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import {
   X,
+  CheckCircle,
   Copy,
   QrCode,
   AlertCircle,
   ShieldCheck,
   Loader2,
-  ShoppingBag,
+  MessageSquare,
 } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
 
@@ -17,29 +18,24 @@ export default function CheckoutModal({
   onConfirm,
 }) {
   const { t } = useLanguage();
-
   const [paymentMethod, setPaymentMethod] = useState("bKash");
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form states
+  // Form States
   const [contactInfo, setContactInfo] = useState("");
   const [senderNumber, setSenderNumber] = useState("");
   const [trxId, setTrxId] = useState("");
-
-  // Validation errors
   const [contactError, setContactError] = useState("");
   const [senderError, setSenderError] = useState("");
 
-  // Payment account numbers
   const paymentNumbers = {
     bKash: "01648582639",
     Nagad: "01648582639",
     Rocket: "01648582639",
   };
 
-  // Payment QR code images
   const paymentQRs = {
     bKash: "/assets/bkash-qr.png",
     Nagad: "/assets/nagad-qr.png",
@@ -48,7 +44,7 @@ export default function CheckoutModal({
 
   if (!isOpen) return null;
 
-  // Validate contact information
+  // Contact Info Validation (Flexible for Email or Phone)
   const handleContactChange = (e) => {
     const value = e.target.value;
     setContactInfo(value);
@@ -76,14 +72,12 @@ export default function CheckoutModal({
     }
   };
 
-  // Validate sender mobile number
+  // Sender Number Validation
   const handlePhoneChange = (e) => {
     const value = e.target.value.replace(/\D/g, "");
-
     if (value.length <= 11) {
       setSenderNumber(value);
       const bdPhoneRegex = /^01[3-9]\d{8}$/;
-
       if (value.length > 0 && value.length < 11) {
         setSenderError("Sender number must be 11 digits");
       } else if (value.length === 11 && !bdPhoneRegex.test(value)) {
@@ -94,7 +88,6 @@ export default function CheckoutModal({
     }
   };
 
-  // Clean and format transaction ID
   const handleTrxChange = (e) => {
     const value = e.target.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
     if (value.length <= 12) {
@@ -102,20 +95,16 @@ export default function CheckoutModal({
     }
   };
 
-  // Copy payment number to clipboard
-  const handleCopy = async () => {
+  const handleCopy = () => {
     try {
-      await navigator.clipboard.writeText(paymentNumbers[paymentMethod]);
+      navigator.clipboard.writeText(paymentNumbers[paymentMethod]);
       setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-      }, 2000);
-    } catch (error) {
-      console.error("Failed to copy payment number:", error);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
     }
   };
 
-  // Handle checkout form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     setContactError("");
@@ -126,21 +115,6 @@ export default function CheckoutModal({
     if (!contactInfo.trim()) {
       setContactError("This field is required");
       hasError = true;
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const phoneRegex = /^01[3-9]\d{8}$/;
-
-      if (contactInfo.includes("@")) {
-        if (!emailRegex.test(contactInfo)) {
-          setContactError("Please enter a valid email address");
-          hasError = true;
-        }
-      } else if (/^\d/.test(contactInfo)) {
-        if (!phoneRegex.test(contactInfo)) {
-          setContactError("Please enter a valid 11-digit mobile number");
-          hasError = true;
-        }
-      }
     }
 
     const bdPhoneRegex = /^01[3-9]\d{8}$/;
@@ -153,7 +127,8 @@ export default function CheckoutModal({
 
     setIsSubmitting(true);
 
-    const adminWhatsAppNumber = "8801648582639";
+    // WhatsApp Integration Logic
+    const adminWhatsAppNumber = "8801648582639"; // Apnar WhatsApp number
     const message =
       `*🛒 New Payment / Order Submission*\n\n` +
       `*Payment Method:* ${paymentMethod}\n` +
@@ -174,22 +149,21 @@ export default function CheckoutModal({
     };
 
     try {
-      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      setTimeout(() => {
+        // Direct WhatsApp-e redirect korbe
+        window.open(whatsappUrl, "_blank");
 
-      if (onConfirm && typeof onConfirm === "function") {
-        onConfirm(paymentData);
-      }
-
-      setContactInfo("");
-      setSenderNumber("");
-      setTrxId("");
-      setContactError("");
-      setSenderError("");
-      setShowQR(false);
-      onClose();
+        if (onConfirm && typeof onConfirm === "function") {
+          onConfirm(paymentData);
+        }
+        setIsSubmitting(false);
+        setContactInfo("");
+        setSenderNumber("");
+        setTrxId("");
+        onClose();
+      }, 800);
     } catch (error) {
       console.error("Checkout submission error:", error);
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -200,7 +174,7 @@ export default function CheckoutModal({
         {/* Top Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 shadow-inner">
+            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-inner">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
@@ -214,7 +188,6 @@ export default function CheckoutModal({
               </p>
             </div>
           </div>
-
           <button
             type="button"
             onClick={onClose}
@@ -224,7 +197,7 @@ export default function CheckoutModal({
           </button>
         </div>
 
-        {/* Total Price Banner */}
+        {/* Minimal Price Banner */}
         <div className="flex items-center justify-between bg-slate-950/60 border border-slate-800/90 rounded-xl p-3.5 mb-4 shadow-inner">
           <div>
             <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
@@ -234,7 +207,6 @@ export default function CheckoutModal({
               ৳{totalAmount}
             </div>
           </div>
-
           <div className="text-right">
             <span className="inline-block px-2.5 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-[11px] font-semibold">
               Instant WhatsApp Checkout
@@ -248,11 +220,9 @@ export default function CheckoutModal({
             <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
               1. {t ? t("selectPaymentMethod") : "Select Payment Method"}
             </label>
-
             <div className="grid grid-cols-3 gap-2">
               {["bKash", "Nagad", "Rocket"].map((method) => {
                 const isActive = paymentMethod === method;
-
                 return (
                   <button
                     key={method}
@@ -260,7 +230,6 @@ export default function CheckoutModal({
                     onClick={() => {
                       setPaymentMethod(method);
                       setShowQR(false);
-                      setCopied(false);
                     }}
                     className={`py-2.5 px-2 rounded-xl font-bold text-xs tracking-wide border transition-all flex items-center justify-center cursor-pointer ${
                       isActive
@@ -279,13 +248,12 @@ export default function CheckoutModal({
             </div>
           </div>
 
-          {/* 2. Payment Account Number */}
+          {/* 2. Account Number Box */}
           <div className="bg-slate-950/40 border border-slate-800/80 rounded-xl p-3.5">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                 2. Send Money to this number
               </span>
-
               <button
                 type="button"
                 onClick={() => setShowQR(!showQR)}
@@ -300,10 +268,12 @@ export default function CheckoutModal({
               <div className="flex flex-col items-center justify-center p-3 bg-slate-900/90 rounded-xl border border-slate-800 mt-1">
                 <img
                   src={paymentQRs[paymentMethod]}
-                  alt={`${paymentMethod} QR Code`}
+                  alt={`${paymentMethod} QR`}
                   className="w-32 h-32 object-contain rounded-lg bg-white p-1.5 shadow"
                   onError={(e) => {
-                    e.currentTarget.style.display = "none";
+                    e.target.onerror = null;
+                    e.target.src =
+                      "https://via.placeholder.com/150?text=QR+Code";
                   }}
                 />
                 <p className="text-xs text-slate-400 mt-2">
@@ -315,7 +285,6 @@ export default function CheckoutModal({
                 <span className="text-base font-bold tracking-wider text-amber-400 font-mono">
                   {paymentNumbers[paymentMethod]}
                 </span>
-
                 <button
                   type="button"
                   onClick={handleCopy}
@@ -328,12 +297,13 @@ export default function CheckoutModal({
             )}
           </div>
 
-          {/* 3. Payment Information */}
+          {/* 3. Form Inputs */}
           <div className="space-y-3">
             <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
               3. Provide Payment Information
             </label>
 
+            {/* Contact Info */}
             <div>
               <input
                 type="text"
@@ -354,6 +324,7 @@ export default function CheckoutModal({
               )}
             </div>
 
+            {/* Sender Number & TrxID */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <input
@@ -362,7 +333,6 @@ export default function CheckoutModal({
                   value={senderNumber}
                   onChange={handlePhoneChange}
                   maxLength={11}
-                  inputMode="numeric"
                   placeholder="Sender Number (01XXXXXXXXX)"
                   className={`w-full bg-slate-950/60 border rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none transition font-mono ${
                     senderError
@@ -371,13 +341,11 @@ export default function CheckoutModal({
                   }`}
                 />
               </div>
-
               <div>
                 <input
                   type="text"
                   value={trxId}
                   onChange={handleTrxChange}
-                  maxLength={12}
                   placeholder="TrxID (Optional)"
                   className="w-full bg-slate-950/60 border border-slate-800 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition font-mono uppercase"
                 />
@@ -392,11 +360,11 @@ export default function CheckoutModal({
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button with WhatsApp Theme */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm tracking-wide rounded-xl shadow-lg shadow-blue-600/25 transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm tracking-wide rounded-xl shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
@@ -405,8 +373,8 @@ export default function CheckoutModal({
               </>
             ) : (
               <>
-                <ShoppingBag className="w-4 h-4" />
-                <span>Proceed to Checkout ({paymentMethod})</span>
+                <MessageSquare className="w-4 h-4" />
+                <span>Confirm & Proceed on WhatsApp</span>
               </>
             )}
           </button>
